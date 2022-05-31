@@ -123,7 +123,6 @@ class ChartCreator:
 
     def plot_a_several_function(self, start_w, stop_w, if_grid, list_):
         fig = Figure(figsize=(5, 4.75), dpi=100)
-        x = np.linspace(start=start_w, stop=stop_w, num=100)
 
         flag = True
         for line in list_:
@@ -156,6 +155,7 @@ class ChartCreator:
                         y = [np.e, np.e]
                         plot1.plot(x, y, 'y', label=line)
                     else:
+                        x = np.linspace(start=start_w, stop=stop_w, num=100)
                         plot1.plot(x, eval(new_formula), label=line)
                 if if_grid:
                     plot1.grid()
