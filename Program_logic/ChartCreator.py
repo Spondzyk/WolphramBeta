@@ -96,6 +96,10 @@ class ChartCreator:
                     x = [start_w, stop_w]
                     y = [float(float_formula), float(float_formula)]
                     plot1.plot(x, y, 'y', label=formula)
+                elif new_formula == 'np.e':
+                    x = [start_w, stop_w]
+                    y = [np.e, np.e]
+                    plot1.plot(x, y, 'y', label=formula)
                 else:
                     plot1.plot(x, eval(new_formula), label=formula)
 
@@ -147,6 +151,10 @@ class ChartCreator:
                         x = [start_w, stop_w]
                         y = [float(float_formula), float(float_formula)]
                         plot1.plot(x, y, 'y', label=line)
+                    elif new_formula == 'np.e':
+                        x = [start_w, stop_w]
+                        y = [np.e, np.e]
+                        plot1.plot(x, y, 'y', label=line)
                     else:
                         plot1.plot(x, eval(new_formula), label=line)
                 if if_grid:
@@ -186,6 +194,10 @@ class ChartCreator:
                     float_formula = new_formula.replace(',', '.', 1)
                     x = [start_w, stop_w]
                     y = [float(float_formula), float(float_formula)]
+                    plot1.plot(x, y, 'y', label=formula)
+                elif new_formula == 'np.e':
+                    x = [start_w, stop_w]
+                    y = [np.e, np.e]
                     plot1.plot(x, y, 'y', label=formula)
                 else:
                     plot1.plot(x, eval(new_formula), label=formula)
