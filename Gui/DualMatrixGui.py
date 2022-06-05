@@ -102,16 +102,16 @@ class DualMatrixGui(CTkFrame):
 
         if not self.col_size1.get().isdigit():
             tkinter.messagebox.showerror("Błąd danych",
-                                         "dana wprowadzona do pola odpowiadającego za ilość kolumn macierzy 1, nie jest liczbą")
+                                         "dana wprowadzona do pola odpowiadającego za ilość kolumn macierzy 1, nie jest liczbą większą od 0")
         elif not self.row_size1.get().isdigit():
             tkinter.messagebox.showerror("Błąd danych",
-                                         "dana wprowadzona do pola odpowiadającego za ilość rzędów macierzy 1, nie jest liczbą")
+                                         "dana wprowadzona do pola odpowiadającego za ilość rzędów macierzy 1, nie jest liczbą większą od 0")
         elif not self.col_size2.get().isdigit():
             tkinter.messagebox.showerror("Błąd danych",
-                                         "dana wprowadzona do pola odpowiadającego za ilość kolumn macierzy 2, nie jest liczbą")
+                                         "dana wprowadzona do pola odpowiadającego za ilość kolumn macierzy 2, nie jest liczbą większą od 0")
         elif not self.row_size2.get().isdigit():
             tkinter.messagebox.showerror("Błąd danych",
-                                         "dana wprowadzona do pola odpowiadającego za ilość rzędów macierzy 2, nie jest liczbą")
+                                         "dana wprowadzona do pola odpowiadającego za ilość rzędów macierzy 2, nie jest liczbą większą od 0")
         else:
             if int(self.row_size1.get()) <= 10 and int(self.row_size2.get()) <= 10 and int(
                     self.col_size1.get()) <= 10 and int(self.col_size2.get()) <= 10:
@@ -252,7 +252,7 @@ class DualMatrixGui(CTkFrame):
                 newWindow = Toplevel(self.parent)
                 newWindow.title('Wynik')
                 w = 400
-                h = 400
+                h = 100 + int(self.row_size1.get()) * 30
 
                 ws = newWindow.winfo_screenwidth()
                 hs = newWindow.winfo_screenheight()
@@ -277,7 +277,7 @@ class DualMatrixGui(CTkFrame):
                 pause2_label.pack()
                 title_frame.pack()
 
-                result_frame = CTkFrame(newWindow, width=400, height=330, bg_color='white smoke',
+                result_frame = CTkFrame(newWindow, width=400, height=h - 80, bg_color='white smoke',
                                         fg_color='white smoke',
                                         border_color='white smoke')
 
@@ -289,7 +289,7 @@ class DualMatrixGui(CTkFrame):
 
                 result_frame.pack()
 
-                end_frame = CTkFrame(newWindow, width=400, height=20, bg_color='white smoke',
+                end_frame = CTkFrame(newWindow, width=400, height=100, bg_color='white smoke',
                                      fg_color='white smoke',
                                      border_color='white smoke')
 
