@@ -68,75 +68,84 @@ class SingleMatrixGui(CTkFrame):
             tkinter.messagebox.showerror("Błąd danych", "dana wprowadzona do pola odpowiadającego za ilość kolumn nie jest liczbą")
         elif not self.row_size.get().isdigit():
             tkinter.messagebox.showerror("Błąd danych", "dana wprowadzona do pola odpowiadającego za ilość rzędów nie jest liczbą")
+        elif self.row_size.get().lstrip('-').isdigit():
+            tkinter.messagebox.showerror("Błąd danych", "dana wprowadzona do pola odpowiadającego za ilość rzędów jest mniejsza od 0")
+        elif self.col_size.get().lstrip('-').isdigit():
+            tkinter.messagebox.showerror("Błąd danych", "dana wprowadzona do pola odpowiadającego za ilość kolumn jest mniejsza od 0")
         else:
-            if int(self.col_size.get()) <= 10 and int(self.row_size.get()) <= 10:
-
-                frame_matrix = CTkFrame(self.frame_widget, width=1100, height=250, bg_color='white smoke',
-                                        fg_color='white smoke',
-                                        border_color='white smoke')
-                for x in range(int(self.row_size.get())):
-                    for y in range(int(self.col_size.get())):
-                        en = CTkEntry(frame_matrix, width=35)
-                        en.grid(row=x, column=y)
-                        self.list_matrix.append(en)
-
-                frame_matrix.pack()
-
-                pause3_frame = CTkFrame(self.frame_widget, width=1100, height=50, bg_color='white smoke',
-                                        fg_color='white smoke',
-                                        border_color='white smoke')
-                pause3_frame.pack()
-
-                button_frame = CTkFrame(self.frame_widget, width=1100, height=60, bg_color='white smoke',
-                                        fg_color='white smoke',
-                                        border_color='white smoke')
-
-                transposition_button = CTkButton(button_frame, width=130, text='Transpozycja',
-                                                 command=self.calculate_transposition)
-                transposition_button.grid(row=0, column=0)
-                label_pause1 = CTkLabel(button_frame, bg_color='white smoke', fg_color='white smoke', text_color='white smoke',
-                                        width=5)
-                label_pause1.grid(row=0, column=1)
-
-                rank_button = CTkButton(button_frame, width=130, text='Rząd macierzy',
-                                        command=self.calculate_rank_of_matrix)
-                rank_button.grid(row=0, column=2)
-
-                label_pause2 = CTkLabel(button_frame, bg_color='white smoke', fg_color='white smoke', text_color='white smoke',
-                                        width=5)
-                label_pause2.grid(row=0, column=3)
-
-                trace_button = CTkButton(button_frame, width=130, text='Ślad macierzy',
-                                         command=self.calculate_trace_of_matrix)
-                trace_button.grid(row=0, column=4)
-
-                label_pause3 = CTkLabel(button_frame, bg_color='white smoke', fg_color='white smoke', text_color='white smoke',
-                                        width=5)
-                label_pause3.grid(row=0, column=5)
-
-                determinant_button = CTkButton(button_frame, width=130, text='Wyznacznik macierzy',
-                                               command=self.calculate_determinant_of_the_matrix)
-                determinant_button.grid(row=0, column=6)
-
-                label_pause4 = CTkLabel(button_frame, bg_color='white smoke', fg_color='white smoke', text_color='white smoke',
-                                        width=5)
-                label_pause4.grid(row=0, column=7)
-
-                inversion_button = CTkButton(button_frame, width=130, text='Macierz odwrotna',
-                                             command=self.calculate_inverse_matrix)
-                inversion_button.grid(row=0, column=8)
-
-                button_frame.pack()
-
-                pause4_frame = CTkFrame(self.frame_widget, width=1100, height=50, bg_color='white smoke',
-                                        fg_color='white smoke',
-                                        border_color='white smoke')
-                pause4_frame.pack()
-
-                self.frame_widget.pack()
-
+            if int(self.col_size.get()) <= 0:
+                tkinter.messagebox.showerror("Błąd danych", "dana wprowadzona do pola odpowiadającego za ilość kolumn powinna być dodatnia")
+            elif int(self.row_size.get()) <= 0:
+                tkinter.messagebox.showerror("Błąd danych", "dana wprowadzona do pola odpowiadającego za ilość rzędów powinna być dodatnia")
             else:
-                tkinter.messagebox.showinfo("Błąd wymiarów", "Proszę wybrać wymiary do maksymalnie 10")
+                if int(self.col_size.get()) <= 10 and int(self.row_size.get()) <= 10:
+
+                    frame_matrix = CTkFrame(self.frame_widget, width=1100, height=250, bg_color='white smoke',
+                                            fg_color='white smoke',
+                                            border_color='white smoke')
+                    for x in range(int(self.row_size.get())):
+                        for y in range(int(self.col_size.get())):
+                            en = CTkEntry(frame_matrix, width=35)
+                            en.grid(row=x, column=y)
+                            self.list_matrix.append(en)
+
+                    frame_matrix.pack()
+
+                    pause3_frame = CTkFrame(self.frame_widget, width=1100, height=50, bg_color='white smoke',
+                                            fg_color='white smoke',
+                                            border_color='white smoke')
+                    pause3_frame.pack()
+
+                    button_frame = CTkFrame(self.frame_widget, width=1100, height=60, bg_color='white smoke',
+                                            fg_color='white smoke',
+                                            border_color='white smoke')
+
+                    transposition_button = CTkButton(button_frame, width=130, text='Transpozycja',
+                                                     command=self.calculate_transposition)
+                    transposition_button.grid(row=0, column=0)
+                    label_pause1 = CTkLabel(button_frame, bg_color='white smoke', fg_color='white smoke', text_color='white smoke',
+                                            width=5)
+                    label_pause1.grid(row=0, column=1)
+
+                    rank_button = CTkButton(button_frame, width=130, text='Rząd macierzy',
+                                            command=self.calculate_rank_of_matrix)
+                    rank_button.grid(row=0, column=2)
+
+                    label_pause2 = CTkLabel(button_frame, bg_color='white smoke', fg_color='white smoke', text_color='white smoke',
+                                            width=5)
+                    label_pause2.grid(row=0, column=3)
+
+                    trace_button = CTkButton(button_frame, width=130, text='Ślad macierzy',
+                                             command=self.calculate_trace_of_matrix)
+                    trace_button.grid(row=0, column=4)
+
+                    label_pause3 = CTkLabel(button_frame, bg_color='white smoke', fg_color='white smoke', text_color='white smoke',
+                                            width=5)
+                    label_pause3.grid(row=0, column=5)
+
+                    determinant_button = CTkButton(button_frame, width=130, text='Wyznacznik macierzy',
+                                                   command=self.calculate_determinant_of_the_matrix)
+                    determinant_button.grid(row=0, column=6)
+
+                    label_pause4 = CTkLabel(button_frame, bg_color='white smoke', fg_color='white smoke', text_color='white smoke',
+                                            width=5)
+                    label_pause4.grid(row=0, column=7)
+
+                    inversion_button = CTkButton(button_frame, width=130, text='Macierz odwrotna',
+                                                 command=self.calculate_inverse_matrix)
+                    inversion_button.grid(row=0, column=8)
+
+                    button_frame.pack()
+
+                    pause4_frame = CTkFrame(self.frame_widget, width=1100, height=50, bg_color='white smoke',
+                                            fg_color='white smoke',
+                                            border_color='white smoke')
+                    pause4_frame.pack()
+
+                    self.frame_widget.pack()
+
+                else:
+                    tkinter.messagebox.showinfo("Błąd wymiarów", "Proszę wybrać wymiary do maksymalnie 10")
 
     def del_widget(self):
         self.frame_widget.destroy()
