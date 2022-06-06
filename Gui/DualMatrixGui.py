@@ -23,16 +23,21 @@ class DualMatrixGui(CTkFrame):
         self.list_matrix2 = []
         self.entry_operation = None
         self.create()
+        # wykorzystanie wcześniej wykonanego backend'u
         self.matrix1 = Matrix()
         self.matrix2 = Matrix()
+        # wykorzystanie wcześniej wykonanego backend'u
         self.matrix_operations = MatrixOperations()
 
+    # funkcja tworzaca przestrzen pracy dla danego okna
     def create(self):
         self.frame_entry = CTkFrame(self.parent, width=1200, height=770, bg_color='white', fg_color='white',
                                     border_color='white')
+        # frame z przerwa
         pause1_frame = CTkFrame(self.frame_entry, width=1200, height=20, bg_color='white', fg_color='white',
                                 border_color='white')
         pause1_frame.pack()
+        # frame z informacja wejsciowa dotyczaca rozmiaru macierzy pierwszej oraz polami do wpisania rozmiaru
         upper_frame = CTkFrame(self.frame_entry, width=1200, height=30, bg_color='white', fg_color='white',
                                border_color='white')
         upper_frame_left = CTkFrame(upper_frame, width=400, height=30, bg_color='white', fg_color='white',
@@ -57,6 +62,7 @@ class DualMatrixGui(CTkFrame):
                                        border_color='white')
         upper_frame_middle1.grid(row=1, column=1)
 
+        # frame z informacja wejsciowa dotyczaca rozmiaru macierzy drugiej oraz polami do wpisania rozmiaru
         upper_frame_right = CTkFrame(upper_frame, width=400, height=30, bg_color='white', fg_color='white',
                                      border_color='white')
         label_size = CTkLabel(upper_frame_right, text='Podaj rozmiar macierzy drugiej:    ', width=100, height=30,
@@ -72,50 +78,66 @@ class DualMatrixGui(CTkFrame):
         upper_frame_right.grid(row=2, column=0)
         upper_frame.pack()
 
+        # frame z przerwa
         pause2_frame = CTkFrame(self.frame_entry, width=1200, height=20, bg_color='white', fg_color='white',
                                 border_color='white')
         pause2_frame.pack()
+
+        # frame z guzikiem ktory przetwarza wyrazenie
         middle_frame = CTkFrame(self.frame_entry, width=1200, height=30, bg_color='white', fg_color='white',
                                 border_color='white')
         accept_button = CTkButton(middle_frame, text='potwierdź', width=70, command=self.add_widget)
         accept_button.grid(row=0)
         middle_frame.pack()
+
+        # frame z przerwa
         pause3_frame = CTkFrame(self.frame_entry, width=1200, height=20, bg_color='white', fg_color='white',
                                 border_color='white')
         pause3_frame.pack()
 
         self.frame_entry.pack()
 
+    # funkcja tworzaca dalsza przestrzen pracy
     def add_widget(self):
+
+        # jesli zostala juz wczeniej utworzona (drugie i kolejne wywolania funkcji) kasujemy dalsza przestrzen pracy
         if self.frame_widget is not None:
             DualMatrixGui.del_widget(self)
             self.list_matrix1.clear()
             self.list_matrix2.clear()
 
+        # tworzenie frame odpowiedzialnego za macierze
         self.frame_widget = CTkFrame(self.frame_entry, width=1200, height=450, bg_color='white smoke',
                                      fg_color='white smoke',
                                      border_color='white smoke')
 
+        # frame z przerwa
         frame_pause = CTkFrame(self.frame_widget, width=1200, height=30, bg_color='white smoke', fg_color='white smoke',
                                border_color='white smoke')
         frame_pause.pack()
 
+        # jesli wprowadzona ilosc kolumn macierzy 1 nie jest cyfra wieksza od 0 to komunikat
         if not self.col_size1.get().isdigit():
             tkinter.messagebox.showerror("Błąd danych",
-                                         "dana wprowadzona do pola odpowiadającego za ilość kolumn macierzy 1, nie jest liczbą")
+                                         "dana wprowadzona do pola odpowiadającego za ilość kolumn macierzy 1, nie jest liczbą większą od 0")
+        # jesli wprowadzona ilosc rzedow macierzy 1 nie jest cyfra wieksza od 0 to komunikat
         elif not self.row_size1.get().isdigit():
             tkinter.messagebox.showerror("Błąd danych",
-                                         "dana wprowadzona do pola odpowiadającego za ilość rzędów macierzy 1, nie jest liczbą")
+                                         "dana wprowadzona do pola odpowiadającego za ilość rzędów macierzy 1, nie jest liczbą większą od 0")
+        # jesli wprowadzona ilosc kolumn macierzy 2 nie jest cyfra wieksza od 0 to komunikat
         elif not self.col_size2.get().isdigit():
             tkinter.messagebox.showerror("Błąd danych",
-                                         "dana wprowadzona do pola odpowiadającego za ilość kolumn macierzy 2, nie jest liczbą")
+                                         "dana wprowadzona do pola odpowiadającego za ilość kolumn macierzy 2, nie jest liczbą większą od 0")
+        # jesli wprowadzona ilosc rzedow macierzy 2 nie jest cyfra wieksza od 0 to komunikat
         elif not self.row_size2.get().isdigit():
             tkinter.messagebox.showerror("Błąd danych",
-                                         "dana wprowadzona do pola odpowiadającego za ilość rzędów macierzy 2, nie jest liczbą")
+                                         "dana wprowadzona do pola odpowiadającego za ilość rzędów macierzy 2, nie jest liczbą większą od 0")
         else:
+            # ograniczenie wielkosci macierzy
             if int(self.row_size1.get()) <= 10 and int(self.row_size2.get()) <= 10 and int(
                     self.col_size1.get()) <= 10 and int(self.col_size2.get()) <= 10:
 
+                # tworzenie framu ktory bedzie zawieral macierze
                 frame_wp = CTkFrame(self.frame_widget, width=400, height=450, bg_color='white smoke',
                                     fg_color='white smoke',
                                     border_color='white smoke')
@@ -123,6 +145,7 @@ class DualMatrixGui(CTkFrame):
                 label_m1 = CTkLabel(frame_wp, width=400, height=30, text='Macierz pierwsza')
                 label_m1.grid(row=0, column=0)
 
+                # tworzenie okien wejsciowych macierzy 1
                 frame_matrix_left = CTkFrame(frame_wp, width=400, height=450, bg_color='white smoke',
                                              fg_color='white smoke',
                                              border_color='white smoke')
@@ -140,6 +163,7 @@ class DualMatrixGui(CTkFrame):
 
                 frame_pause1.grid(row=1, column=1)
 
+                # dodanie znaku operatora
                 label_op = CTkLabel(frame_wp, width=50, height=30, text='Operacja')
                 label_op.grid(row=0, column=2)
 
@@ -152,6 +176,7 @@ class DualMatrixGui(CTkFrame):
 
                 frame_operation.grid(row=1, column=2)
 
+                # tworzenie okien wejsciowych macierzy 2
                 frame_matrix_right = CTkFrame(frame_wp, width=400, height=450, bg_color='white smoke',
                                               fg_color='white smoke',
                                               border_color='white smoke')
@@ -161,6 +186,8 @@ class DualMatrixGui(CTkFrame):
                         en.grid(row=x, column=y)
                         self.list_matrix2.append(en)
 
+
+                # frame z przerwa
                 frame_pause2 = CTkFrame(frame_wp, width=100, height=450, bg_color='white smoke',
                                         fg_color='white smoke',
                                         border_color='white smoke')
@@ -172,6 +199,7 @@ class DualMatrixGui(CTkFrame):
 
                 frame_matrix_right.grid(row=1, column=4)
 
+                #guzik ktory przetwarza wyrazenie i zwraca wynik
                 accept_button = CTkButton(frame_wp, text='oblicz', width=50, command=self.calculate)
                 accept_button.grid(row=2, column=2)
 
@@ -186,9 +214,11 @@ class DualMatrixGui(CTkFrame):
             else:
                 tkinter.messagebox.showinfo("Błąd wymiarów", "Proszę wybrać wymiary do maksymalnie 10")
 
+    # metoda odpowiedzialna za niszczenie dalszego obszaru pracy
     def del_widget(self):
         self.frame_widget.destroy()
 
+    # funkcja odpowiedzialna za wyliczneie i wyswietlenie macierzy wynikowej
     def calculate(self):
         if self.entry_operation.get() != '+' and self.entry_operation.get() != '*' and self.entry_operation.get() != '-':
             tkinter.messagebox.showerror('Błąd operacji',
@@ -252,7 +282,7 @@ class DualMatrixGui(CTkFrame):
                 newWindow = Toplevel(self.parent)
                 newWindow.title('Wynik')
                 w = 400
-                h = 400
+                h = 100 + int(self.row_size1.get()) * 30
 
                 ws = newWindow.winfo_screenwidth()
                 hs = newWindow.winfo_screenheight()
@@ -277,7 +307,7 @@ class DualMatrixGui(CTkFrame):
                 pause2_label.pack()
                 title_frame.pack()
 
-                result_frame = CTkFrame(newWindow, width=400, height=330, bg_color='white smoke',
+                result_frame = CTkFrame(newWindow, width=400, height=h - 80, bg_color='white smoke',
                                         fg_color='white smoke',
                                         border_color='white smoke')
 
@@ -289,14 +319,8 @@ class DualMatrixGui(CTkFrame):
 
                 result_frame.pack()
 
-                end_frame = CTkFrame(newWindow, width=400, height=20, bg_color='white smoke',
+                end_frame = CTkFrame(newWindow, width=400, height=100, bg_color='white smoke',
                                      fg_color='white smoke',
                                      border_color='white smoke')
 
                 end_frame.pack()
-
-
-if __name__ == '__main__':
-    master = Tk()
-    s = DualMatrixGui(master)
-    s.mainloop()

@@ -17,63 +17,90 @@ class SingleMatrixGui(CTkFrame):
         self.col_size = None
         self.list_matrix = []
         self.create()
+        # wykorzystanie wcześniej wykonanego backend'u
         self.matrix_app = Matrix()
 
+    # funkcja tworzaca przestrzen pracy dla danego okna
     def create(self):
         self.frame_entry = CTkFrame(self.parent, width=1100, height=600, bg_color='white', fg_color='white',
                                     border_color='white')
+        # frame z przerwa
         pause1_frame = CTkFrame(self.frame_entry, width=1100, height=20, bg_color='white', fg_color='white',
                                 border_color='white')
         pause1_frame.pack()
+        # frame z informacja wejsciowa dotyczaca rozmiaru macierzy oraz polami do wpisania rozmiaru
         upper_frame = CTkFrame(self.frame_entry, width=1100, height=80, bg_color='white', fg_color='white',
                                border_color='white')
         label_size = CTkLabel(upper_frame, text='Podaj rozmiar macierzy:', width=100, height=30, bg_color='white',
                               fg_color='white')
         label_size.grid(row=0, column=0)
+
         self.row_size = CTkEntry(upper_frame, placeholder_text='X', width=35)
         self.row_size.grid(row=0, column=1)
+
         label_x = CTkLabel(upper_frame, text='x', width=10, height=30)
         label_x.grid(row=0, column=2)
+
         self.col_size = CTkEntry(upper_frame, placeholder_text='Y', width=35)
         self.col_size.grid(row=0, column=3)
+
         upper_frame.pack()
+
+        # frame z przerwa
         pause2_frame = CTkFrame(self.frame_entry, width=1100, height=25, bg_color='white', fg_color='white',
                                 border_color='white')
         pause2_frame.pack()
+
+        # frame z guzikiem ktory przetwarza wyrazenie
         middle_frame = CTkFrame(self.frame_entry, width=1100, height=50, bg_color='white', fg_color='white',
                                 border_color='white')
         accept_button = CTkButton(middle_frame, text='potwierdź', width=70, command=self.add_widget)
         accept_button.grid(row=0)
         middle_frame.pack()
+
+        # frame z przerwa
         pause3_frame = CTkFrame(self.frame_entry, width=1100, height=25, bg_color='white', fg_color='white',
                                 border_color='white')
         pause3_frame.pack()
 
         self.frame_entry.pack()
 
+    # funkcja tworzaca dalsza przestrzen pracy
     def add_widget(self):
 
+        # jesli zostala juz wczeniej utworzona (drugie i kolejne wywolania funkcji) kasujemy dalsza przestrzen pracy
         if self.frame_widget is not None:
             SingleMatrixGui.del_widget(self)
             self.list_matrix.clear()
 
+        # tworzenie frame odpowiedzialnego za macierz
         self.frame_widget = CTkFrame(self.frame_entry, width=1100, height=350, bg_color='white smoke',
                                      fg_color='white smoke',
                                      border_color='white smoke')
 
+        # frame z przerwa
         frame_pause = CTkFrame(self.frame_widget, width=1100, height=40, bg_color='white smoke', fg_color='white smoke',
                                border_color='white smoke')
+        frame_pause.pack()
 
+        # jesli wprowadzona ilosc kolumn nie jest cyfra wieksza od 0 to komunikat
         if not self.col_size.get().isdigit():
-            tkinter.messagebox.showerror("Błąd danych", "dana wprowadzona do pola odpowiadającego za ilość kolumn nie jest liczbą")
+            tkinter.messagebox.showerror("Błąd danych",
+                                         "dana wprowadzona do pola odpowiadającego za ilość kolumn nie jest liczbą większą od 0")
+        # jesli wprowadzona ilosc rzedow nie jest cyfra wieksza od 0 to komunikat
         elif not self.row_size.get().isdigit():
-            tkinter.messagebox.showerror("Błąd danych", "dana wprowadzona do pola odpowiadającego za ilość rzędów nie jest liczbą")
+            tkinter.messagebox.showerror("Błąd danych",
+                                         "dana wprowadzona do pola odpowiadającego za ilość rzędów nie jest liczbą większą od 0")
         else:
+            # ograniczenie wielkosci macierzy
             if int(self.col_size.get()) <= 10 and int(self.row_size.get()) <= 10:
 
-                frame_matrix = CTkFrame(self.frame_widget, width=1100, height=250, bg_color='white smoke',
+                # tworzenie framu ktory bedzie zawieral macierz
+                frame_matrix = CTkFrame(self.frame_widget, width=1100, height=350, bg_color='white smoke',
                                         fg_color='white smoke',
                                         border_color='white smoke')
+
+                # tworzenie okien wejsciowych macierzy
                 for x in range(int(self.row_size.get())):
                     for y in range(int(self.col_size.get())):
                         en = CTkEntry(frame_matrix, width=35)
@@ -82,11 +109,13 @@ class SingleMatrixGui(CTkFrame):
 
                 frame_matrix.pack()
 
+                # frame z przerwa
                 pause3_frame = CTkFrame(self.frame_widget, width=1100, height=50, bg_color='white smoke',
                                         fg_color='white smoke',
                                         border_color='white smoke')
                 pause3_frame.pack()
 
+                # frame z guzikami ktore przetwarzaja wyrazenie i zwracaja wynik
                 button_frame = CTkFrame(self.frame_widget, width=1100, height=60, bg_color='white smoke',
                                         fg_color='white smoke',
                                         border_color='white smoke')
@@ -94,7 +123,8 @@ class SingleMatrixGui(CTkFrame):
                 transposition_button = CTkButton(button_frame, width=130, text='Transpozycja',
                                                  command=self.calculate_transposition)
                 transposition_button.grid(row=0, column=0)
-                label_pause1 = CTkLabel(button_frame, bg_color='white smoke', fg_color='white smoke', text_color='white smoke',
+                label_pause1 = CTkLabel(button_frame, bg_color='white smoke', fg_color='white smoke',
+                                        text_color='white smoke',
                                         width=5)
                 label_pause1.grid(row=0, column=1)
 
@@ -102,7 +132,8 @@ class SingleMatrixGui(CTkFrame):
                                         command=self.calculate_rank_of_matrix)
                 rank_button.grid(row=0, column=2)
 
-                label_pause2 = CTkLabel(button_frame, bg_color='white smoke', fg_color='white smoke', text_color='white smoke',
+                label_pause2 = CTkLabel(button_frame, bg_color='white smoke', fg_color='white smoke',
+                                        text_color='white smoke',
                                         width=5)
                 label_pause2.grid(row=0, column=3)
 
@@ -110,7 +141,8 @@ class SingleMatrixGui(CTkFrame):
                                          command=self.calculate_trace_of_matrix)
                 trace_button.grid(row=0, column=4)
 
-                label_pause3 = CTkLabel(button_frame, bg_color='white smoke', fg_color='white smoke', text_color='white smoke',
+                label_pause3 = CTkLabel(button_frame, bg_color='white smoke', fg_color='white smoke',
+                                        text_color='white smoke',
                                         width=5)
                 label_pause3.grid(row=0, column=5)
 
@@ -118,7 +150,8 @@ class SingleMatrixGui(CTkFrame):
                                                command=self.calculate_determinant_of_the_matrix)
                 determinant_button.grid(row=0, column=6)
 
-                label_pause4 = CTkLabel(button_frame, bg_color='white smoke', fg_color='white smoke', text_color='white smoke',
+                label_pause4 = CTkLabel(button_frame, bg_color='white smoke', fg_color='white smoke',
+                                        text_color='white smoke',
                                         width=5)
                 label_pause4.grid(row=0, column=7)
 
@@ -128,7 +161,8 @@ class SingleMatrixGui(CTkFrame):
 
                 button_frame.pack()
 
-                pause4_frame = CTkFrame(self.frame_widget, width=1100, height=50, bg_color='white smoke',
+                # frame z przerwa
+                pause4_frame = CTkFrame(self.frame_widget, width=1100, height=500, bg_color='white smoke',
                                         fg_color='white smoke',
                                         border_color='white smoke')
                 pause4_frame.pack()
@@ -138,9 +172,11 @@ class SingleMatrixGui(CTkFrame):
             else:
                 tkinter.messagebox.showinfo("Błąd wymiarów", "Proszę wybrać wymiary do maksymalnie 10")
 
+    # metoda odpowiedzialna za niszczenie dalszego obszaru pracy
     def del_widget(self):
         self.frame_widget.destroy()
 
+    # funkcja odpowiedzialna za wyliczneie i wyswietlenie macierzy transponowanej
     def calculate_transposition(self):
         self.matrix_app.number_of_rows = int(self.row_size.get())
         self.matrix_app.number_of_columns = int(self.col_size.get())
@@ -167,8 +203,8 @@ class SingleMatrixGui(CTkFrame):
 
         newWindow = Toplevel(self.parent)
         newWindow.title('Wynik')
-        w = 400
-        h = 400
+        w = 600
+        h = 100 + int(self.row_size.get()) * 30
 
         ws = newWindow.winfo_screenwidth()
         hs = newWindow.winfo_screenheight()
@@ -178,38 +214,38 @@ class SingleMatrixGui(CTkFrame):
 
         newWindow.geometry('%dx%d+%d+%d' % (w, h, x, y))
 
-        title_frame = CTkFrame(newWindow, width=400, height=50, bg_color='white smoke',
+        title_frame = CTkFrame(newWindow, width=600, height=50, bg_color='white smoke',
                                fg_color='white smoke',
                                border_color='white smoke')
 
-        pause1_label = CTkLabel(title_frame, width=400, height=10, bg_color='white smoke',
+        pause1_label = CTkLabel(title_frame, width=600, height=10, bg_color='white smoke',
                                 fg_color='white smoke', text_color='white smoke')
         pause1_label.pack()
-        result_label = CTkLabel(title_frame, width=400, height=30, bg_color='white smoke',
+        result_label = CTkLabel(title_frame, width=600, height=30, bg_color='white smoke',
                                 fg_color='white smoke', text="Macierz transponowana")
         result_label.pack()
-        pause2_label = CTkLabel(title_frame, width=400, height=10, bg_color='white smoke',
+        pause2_label = CTkLabel(title_frame, width=600, height=10, bg_color='white smoke',
                                 fg_color='white smoke', text_color='white smoke')
         pause2_label.pack()
         title_frame.pack()
 
-        result_frame = CTkFrame(newWindow, width=400, height=330, bg_color='white smoke',
+        result_frame = CTkFrame(newWindow, width=600, height=h - 80, bg_color='white smoke',
                                 fg_color='white smoke',
                                 border_color='white smoke')
-
         for y in range(int(self.row_size.get())):
             for x in range(int(self.col_size.get())):
-                label = CTkEntry(result_frame, width=35, placeholder_text=self.matrix_app.matrix_form[y][x])
+                label = CTkEntry(result_frame, width=50, placeholder_text=self.matrix_app.matrix_form[y][x])
                 label.grid(row=x, column=y)
 
         result_frame.pack()
 
-        end_frame = CTkFrame(newWindow, width=400, height=20, bg_color='white smoke',
+        end_frame = CTkFrame(newWindow, width=600, height=80, bg_color='white smoke',
                              fg_color='white smoke',
                              border_color='white smoke')
 
         end_frame.pack()
 
+    # funkcja odpowiedzialna za wyliczneie i wyswietlenie rzedu macierzy
     def calculate_rank_of_matrix(self):
         self.matrix_app.number_of_rows = int(self.row_size.get())
         self.matrix_app.number_of_columns = int(self.col_size.get())
@@ -237,6 +273,7 @@ class SingleMatrixGui(CTkFrame):
 
         tkinter.messagebox.showinfo('Rząd macierzy', 'Rząd macierzy wynosi: {}'.format(rank_of_matrix))
 
+    # funkcja odpowiedzialna za wyliczneie i wyswietlenie sladu macierzy
     def calculate_trace_of_matrix(self):
         self.matrix_app.number_of_rows = int(self.row_size.get())
         self.matrix_app.number_of_columns = int(self.col_size.get())
@@ -264,6 +301,7 @@ class SingleMatrixGui(CTkFrame):
 
         tkinter.messagebox.showinfo('Ślad macierzy', 'Ślad macierzy wynosi: {}'.format(trace_of_matrix))
 
+    # funkcja odpowiedzialna za wyliczneie i wyswietlenie wyznacznika macierzy
     def calculate_determinant_of_the_matrix(self):
         self.matrix_app.number_of_rows = int(self.row_size.get())
         self.matrix_app.number_of_columns = int(self.col_size.get())
@@ -295,6 +333,7 @@ class SingleMatrixGui(CTkFrame):
             tkinter.messagebox.showerror('Błąd wielkości',
                                          'Macierz nie jest macierzą kwadratową, więc nie można obliczyć wyznacznika.')
 
+    # funkcja odpowiedzialna za wyliczneie i wyswietlenie macierzy odwrotnej
     def calculate_inverse_matrix(self):
         self.matrix_app.number_of_rows = int(self.row_size.get())
         self.matrix_app.number_of_columns = int(self.col_size.get())
@@ -328,8 +367,8 @@ class SingleMatrixGui(CTkFrame):
                 self.matrix_app.matrix_form = inverse_matrix
                 newWindow = Toplevel(self.parent)
                 newWindow.title('Wynik')
-                w = 400
-                h = 400
+                w = 600
+                h = 100 + int(self.row_size.get()) * 30
 
                 ws = newWindow.winfo_screenwidth()
                 hs = newWindow.winfo_screenheight()
@@ -339,34 +378,34 @@ class SingleMatrixGui(CTkFrame):
 
                 newWindow.geometry('%dx%d+%d+%d' % (w, h, x, y))
 
-                title_frame = CTkFrame(newWindow, width=400, height=50, bg_color='white smoke',
+                title_frame = CTkFrame(newWindow, width=600, height=50, bg_color='white smoke',
                                        fg_color='white smoke',
                                        border_color='white smoke')
 
-                pause1_label = CTkLabel(title_frame, width=400, height=10, bg_color='white smoke',
+                pause1_label = CTkLabel(title_frame, width=600, height=10, bg_color='white smoke',
                                         fg_color='white smoke', text_color='white smoke')
                 pause1_label.pack()
-                result_label = CTkLabel(title_frame, width=400, height=30, bg_color='white smoke',
+                result_label = CTkLabel(title_frame, width=600, height=30, bg_color='white smoke',
                                         fg_color='white smoke', text="Macierz odwrotna")
                 result_label.pack()
-                pause2_label = CTkLabel(title_frame, width=400, height=10, bg_color='white smoke',
+                pause2_label = CTkLabel(title_frame, width=600, height=10, bg_color='white smoke',
                                         fg_color='white smoke', text_color='white smoke')
                 pause2_label.pack()
                 title_frame.pack()
 
-                result_frame = CTkFrame(newWindow, width=400, height=330, bg_color='white smoke',
+                result_frame = CTkFrame(newWindow, width=600, height=h - 80, bg_color='white smoke',
                                         fg_color='white smoke',
                                         border_color='white smoke')
 
                 for x in range(int(self.row_size.get())):
                     for y in range(int(self.col_size.get())):
-                        label = CTkEntry(result_frame, width=50,
+                        label = CTkEntry(result_frame, width=60,
                                          placeholder_text="{:.2f}".format(self.matrix_app.matrix_form[x][y]))
                         label.grid(row=x, column=y)
 
                 result_frame.pack()
 
-                end_frame = CTkFrame(newWindow, width=400, height=20, bg_color='white smoke',
+                end_frame = CTkFrame(newWindow, width=600, height=80, bg_color='white smoke',
                                      fg_color='white smoke',
                                      border_color='white smoke')
 
@@ -374,9 +413,3 @@ class SingleMatrixGui(CTkFrame):
         else:
             tkinter.messagebox.showerror('Błąd wielkości',
                                          'Macierz nie jest macierzą kwadratową, więc nie można obliczyć macierzy odwrotnej.')
-
-
-if __name__ == '__main__':
-    master = Tk()
-    s = SingleMatrixGui(master)
-    s.mainloop()

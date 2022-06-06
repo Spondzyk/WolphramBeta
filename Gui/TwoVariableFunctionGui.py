@@ -1,5 +1,4 @@
 import tkinter.messagebox
-from tkinter import *
 
 from customtkinter import *
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -15,7 +14,7 @@ class TwoVariableFunctionGui(CTkFrame):
         self.parent.geometry("{}x{}".format(600, 800))
         self.parent.resizable(False, False)
         self.formula = None
-        self.if_grid = False
+        # wykorzystanie wcześniej wykonanego backend'u
         self.chart = Program_logic.ChartCreator.ChartCreator()
         self.start_x = self.chart.start_x
         self.stop_x = self.chart.stop_x
@@ -23,14 +22,17 @@ class TwoVariableFunctionGui(CTkFrame):
         self.stop_y = self.chart.stop_y
         self.create()
 
+    # funkcja tworzaca przestrzen pracy dla danego okna
     def create(self):
         self.frame_entry = CTkFrame(self.parent, width=600, height=800, bg_color='white', fg_color='white',
                                     border_color='white')
 
+        # frame z przerwa
         pause0_frame = CTkFrame(self.frame_entry, width=600, height=20, bg_color='white', fg_color='white',
                                 border_color='white')
         pause0_frame.pack()
 
+        # frame z informacja wejsciowa
         info_frame = CTkFrame(self.frame_entry, width=600, height=100, bg_color='white', fg_color='white',
                               border_color='white')
 
@@ -39,10 +41,13 @@ class TwoVariableFunctionGui(CTkFrame):
 
         intro.pack()
         info_frame.pack()
+
+        # frame z przerwa
         pause1_frame = CTkFrame(self.frame_entry, width=600, height=20, bg_color='white', fg_color='white',
                                 border_color='white')
         pause1_frame.pack()
 
+        # frame z informajca odnoszaca sie do wprowadzanej funkcji
         upper_frame = CTkFrame(self.frame_entry, width=600, height=30, bg_color='white', fg_color='white',
                                border_color='white')
 
@@ -59,11 +64,13 @@ class TwoVariableFunctionGui(CTkFrame):
 
         upper_frame.pack()
 
+        # frame z przerwa
         pause2_frame = CTkFrame(self.frame_entry, width=600, height=10, bg_color='white', fg_color='white',
                                 border_color='white')
 
         pause2_frame.pack()
 
+        # frame z oknem do ktorego wprowadzamy funkcje
         formula_frame = CTkFrame(self.frame_entry, width=600, height=50, bg_color='white', fg_color='white',
                                  border_color='white')
 
@@ -83,11 +90,13 @@ class TwoVariableFunctionGui(CTkFrame):
 
         formula_frame.pack()
 
+        # frame z przerwa
         pause3_frame = CTkFrame(self.frame_entry, width=600, height=10, bg_color='white', fg_color='white',
                                 border_color='white')
 
         pause3_frame.pack()
 
+        # frame z guzikiem ktory przetwarza wyrazenie i zwraca wynik
         bottom_frame = CTkFrame(self.frame_entry, width=600, height=50, bg_color='white', fg_color='white',
                                 border_color='white')
 
@@ -95,20 +104,25 @@ class TwoVariableFunctionGui(CTkFrame):
         accept_button.pack()
         bottom_frame.pack()
 
+        # frame z przerwa
         pause5_frame = CTkFrame(self.frame_entry, width=600, height=10, bg_color='white', fg_color='white',
                                 border_color='white')
         pause5_frame.pack()
 
         self.frame_entry.pack()
 
+    # funkcja tworzaca przestrzen wynikowa
     def add_widget(self):
         flag = True
+        # jesli zostala juz wczeniej utworzona (drugie i kolejne wywolania funkcji) kasujemy przestrzen wynikowa
         if self.frame_widget is not None:
             TwoVariableFunctionGui.del_widget(self)
 
+        # tworzenie frame wynikowego
         self.frame_widget = CTkFrame(self.frame_entry, width=600, height=600, bg_color='white',
                                      fg_color='white',
                                      border_color='white')
+        # jesli nie ma formuly zwracamy komunikat
         if self.formula.get() == '':
             tkinter.messagebox.showinfo('Brak formuły', "Nie wprowadzono formuły funkcji")
             flag = False
@@ -121,18 +135,21 @@ class TwoVariableFunctionGui(CTkFrame):
                                          fg_color='white',
                                          border_color='white')
 
+            # wykorzystanie metody zwracajacej obraz funkcji dwoch zmiennych
             fig = self.chart.plot_function_with_two_variables(self.formula.get(), self.start_x, self.stop_x,
-                                                              self.start_y, self.stop_y,
-                                                              self.if_grid)
+                                                              self.start_y, self.stop_y)
 
+            # jezeli funkcja nie zawiera zadnych zmiennych komunikat odsylajacy do wykorzystania innej funkcji
             if 'single variable function' in self.chart.info:
                 tkinter.messagebox.showinfo('Information', self.chart.info)
             else:
                 if self.chart.info == 'done':
+                    # przypisanie obrazu funkcji do kanwy
                     canvas = FigureCanvasTkAgg(fig, master=self.frame_widget)
                     canvas.draw()
                     canvas.get_tk_widget().pack()
 
+                    # frame z guzikami sluzacymi do zmiany wymiarow osi x
                     bottom_frame = CTkFrame(self.frame_widget, width=600, height=100, bg_color='white',
                                             fg_color='white',
                                             border_color='white')
@@ -150,12 +167,14 @@ class TwoVariableFunctionGui(CTkFrame):
 
                     frame_buttons_x.grid(row=0, column=0)
 
+                    # frame z przerwa
                     frame_pause = CTkFrame(bottom_frame, width=200, height=100, bg_color='white',
                                            fg_color='white',
                                            border_color='white')
 
                     frame_pause.grid(row=0, column=1)
 
+                    # frame z guzikami sluzacymi do zmiany wymiarow osi y
                     frame_buttons_y = CTkFrame(bottom_frame, width=100, height=100, bg_color='white',
                                                fg_color='white',
                                                border_color='white')
@@ -170,6 +189,7 @@ class TwoVariableFunctionGui(CTkFrame):
 
                     frame_buttons_y.grid(row=0, column=2)
                     bottom_frame.pack()
+                # obsluga bledow i wyswietlanie komunikatow
                 else:
                     if self.chart.info == 'syntax error':
                         tkinter.messagebox.showerror('Błąd formuły', '''Błąd formuły, wystąpił błąd składni formuły''')
@@ -186,42 +206,34 @@ class TwoVariableFunctionGui(CTkFrame):
 
                 self.frame_widget.pack()
 
+    # metoda odpowiadajaca za dzialanie guzika + wzgledem osi x
     def plus_button_x(self):
         self.chart.change_size_x(True)
         self.start_x = self.chart.start_x
         self.stop_x = self.chart.stop_x
         self.add_widget()
 
+    # metoda odpowiadajaca za dzialanie guzika - wzgledem osi x
     def minus_button_x(self):
         self.chart.change_size_x(False)
         self.start_x = self.chart.start_x
         self.stop_x = self.chart.stop_x
         self.add_widget()
 
+    # metoda odpowiadajaca za dzialanie guzika + wzgledem osi y
     def plus_button_y(self):
         self.chart.change_size_y(True)
         self.start_y = self.chart.start_y
         self.stop_y = self.chart.stop_y
         self.add_widget()
 
+    # metoda odpowiadajaca za dzialanie guzika - wzgledem osi y
     def minus_button_y(self):
         self.chart.change_size_y(False)
         self.start_y = self.chart.start_y
         self.stop_y = self.chart.stop_y
         self.add_widget()
 
-    def change_grid(self):
-        if self.if_grid:
-            self.if_grid = False
-        else:
-            self.if_grid = True
-        self.add_widget()
-
+    # metoda odpowiedzialna za niszczenie obszaru wynikowego
     def del_widget(self):
         self.frame_widget.destroy()
-
-
-if __name__ == '__main__':
-    master = Tk()
-    s = TwoVariableFunctionGui(master)
-    s.mainloop()

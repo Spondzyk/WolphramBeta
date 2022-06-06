@@ -19,17 +19,21 @@ class IntegralGui(CTkFrame):
         self.start_limit = None
         self.end_limit = None
         self.formula = None
+        # wykorzystanie wcześniej wykonanego backend'u
         self.math_ = CalculusAndAnalysis
         self.create()
 
+    # funkcja tworzaca przestrzen pracy dla danego okna
     def create(self):
         self.frame_entry = CTkFrame(self.parent, width=800, height=410, bg_color='white', fg_color='white',
                                     border_color='white')
 
+        # frame z przerwa
         pause0_frame = CTkFrame(self.frame_entry, width=800, height=20, bg_color='white', fg_color='white',
                                 border_color='white')
         pause0_frame.pack()
 
+        # frame z informacja wejsciowa
         info_frame = CTkFrame(self.frame_entry, width=800, height=100, bg_color='white', fg_color='white',
                               border_color='white')
 
@@ -40,10 +44,13 @@ class IntegralGui(CTkFrame):
 
         intro.pack()
         info_frame.pack()
+
+        # frame z przerwa
         pause1_frame = CTkFrame(self.frame_entry, width=800, height=20, bg_color='white', fg_color='white',
                                 border_color='white')
         pause1_frame.pack()
 
+        # frame z informajca odnoszaca sie do wprowadzanej funkcji
         upper_frame = CTkFrame(self.frame_entry, width=800, height=30, bg_color='white', fg_color='white',
                                border_color='white')
 
@@ -60,12 +67,14 @@ class IntegralGui(CTkFrame):
 
         upper_frame.pack()
 
+        # frame z przerwa
         pause2_frame = CTkFrame(self.frame_entry, width=800, height=40, bg_color='white', fg_color='white',
                                 border_color='white')
 
         left_label = CTkLabel(pause2_frame, text_color='white', width=89, height=40, bg_color='white',
                               fg_color='white')
         left_label.grid(row=0, column=0)
+        # ustalenie limitow calkowania
         self.e_limit = CTkEntry(pause2_frame, width=40, height=40)
         self.e_limit.grid(row=0, column=1)
         right_label = CTkLabel(pause2_frame, text_color='white', width=701, height=40, bg_color='white',
@@ -73,6 +82,7 @@ class IntegralGui(CTkFrame):
         right_label.grid(row=0, column=2)
         pause2_frame.pack()
 
+        # frame funkcji
         formula_frame = CTkFrame(self.frame_entry, width=800, height=64, bg_color='white', fg_color='white',
                                  border_color='white')
 
@@ -81,6 +91,7 @@ class IntegralGui(CTkFrame):
 
         left2_label.grid(row=0, column=0)
 
+        # wstawienie obrazka calki
         iconPath = 'images/integral.jpg'
         icon = ImageTk.PhotoImage(Image.open(iconPath))
         icon_size = CTkLabel(formula_frame, bg_color='white', fg_color='white')
@@ -88,9 +99,11 @@ class IntegralGui(CTkFrame):
         icon_size.configure(image=icon)
         icon_size.grid(row=0, column=1)
 
+        # okno do wprowadzenia formuly
         self.formula = CTkEntry(formula_frame, width=350, height=64)
         self.formula.grid(row=0, column=2)
 
+        # obrazek calkowania po dx
         iconPath1 = 'images/dx.jpg'
         icon1 = ImageTk.PhotoImage(Image.open(iconPath1))
         icon_size1 = CTkLabel(formula_frame, bg_color='white', fg_color='white')
@@ -105,12 +118,14 @@ class IntegralGui(CTkFrame):
 
         formula_frame.pack()
 
+        # frame z przerwa
         pause3_frame = CTkFrame(self.frame_entry, width=800, height=20, bg_color='white', fg_color='white',
                                 border_color='white')
 
         left3_label = CTkLabel(pause3_frame, text_color='white', width=89, height=40, bg_color='white',
                                fg_color='white')
         left3_label.grid(row=0, column=0)
+        # ustalenie limitow calkowania
         self.s_limit = CTkEntry(pause3_frame, width=40, height=40)
         self.s_limit.grid(row=0, column=1)
         right3_label = CTkLabel(pause3_frame, text_color='white', width=701, height=40, bg_color='white',
@@ -118,10 +133,12 @@ class IntegralGui(CTkFrame):
         right3_label.grid(row=0, column=2)
         pause3_frame.pack()
 
+        # frame z przerwa
         pause4_frame = CTkFrame(self.frame_entry, width=800, height=20, bg_color='white', fg_color='white',
                                 border_color='white')
         pause4_frame.pack()
 
+        # frame z guzikiem ktory przetwarza wyrazenie i zwraca wynik
         bottom_frame = CTkFrame(self.frame_entry, width=800, height=50, bg_color='white', fg_color='white',
                                 border_color='white')
 
@@ -129,20 +146,25 @@ class IntegralGui(CTkFrame):
         accept_button.pack()
         bottom_frame.pack()
 
+        # frame z przerwa
         pause5_frame = CTkFrame(self.frame_entry, width=800, height=20, bg_color='white', fg_color='white',
                                 border_color='white')
         pause5_frame.pack()
 
         self.frame_entry.pack()
 
+    # funkcja tworzaca przestrzen wynikowa
     def add_widget(self):
 
+        # jesli nie ma formuly zwracamy komunikat
         if self.formula.get() == '':
             tkinter.messagebox.showinfo('Brak formuły', "Nie wprowadzono formuły funkcji")
         else:
+            # jesli zostala juz wczeniej utworzona (drugie i kolejne wywolania funkcji) kasujemy przestrzen wynikowa
             if self.frame_widget is not None:
                 IntegralGui.del_widget(self)
 
+            # tworzenie frame wynikowego
             self.frame_widget = CTkFrame(self.frame_entry, width=800, height=100, bg_color='white smoke',
                                          fg_color='white smoke',
                                          border_color='white smoke')
@@ -159,6 +181,7 @@ class IntegralGui(CTkFrame):
 
             formula = self.formula.get()
 
+            # sprawdzenie poprawnosci granicy calkowania
             if self.s_limit.get() == '':
                 self.start_limit = None
             elif self.s_limit.get().isdigit():
@@ -183,8 +206,10 @@ class IntegralGui(CTkFrame):
                 tkinter.messagebox.showerror('Błąd',
                                              "Błędna górna granica całkowania, nie jest ona liczbą ani nieskończonością")
 
+            # wykorzystanie metody zwracajacej wynik dzialania
             result = self.math_.CalculusAndAnalysis.integration(formula, 'x', self.start_limit, self.end_limit)
 
+            # jesli wynik jest stringiem wtedy blad i odpowiednie dzialanie
             if isinstance(result, str):
 
                 label_r = CTkLabel(frame_result, text='Wynik: ', width=150, height=50,
@@ -212,6 +237,7 @@ class IntegralGui(CTkFrame):
                                                      'Błąd formuły, wystąpił nieoczekiwany błąd, sprawdź poprawność zapisu albo spróbuj ponownie')
                 else:
                     tkinter.messagebox.showerror("Błąd", result)
+            # jesli nie jest stringiem to wtedy wynik prawidlowy i wypisanie
             else:
                 label_r = CTkLabel(frame_result, text='Wynik: ', width=100, height=50,
                                    bg_color='white smoke', text_font=("Arial Bold", 13),
@@ -232,11 +258,6 @@ class IntegralGui(CTkFrame):
             frame_pause1.pack()
             self.frame_widget.pack()
 
+    # metoda odpowiedzialna za niszczenie obszaru wynikowego
     def del_widget(self):
         self.frame_widget.destroy()
-
-
-if __name__ == '__main__':
-    master = Tk()
-    s = IntegralGui(master)
-    s.mainloop()

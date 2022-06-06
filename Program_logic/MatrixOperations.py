@@ -1,11 +1,15 @@
 from Program_logic.Matrix import *
 
 
+# klasa umozliwiajaca wykonywanie dzialan algebraicznych na dwoch macierzach
 class MatrixOperations:
 
+    # metoda umożliwiajaca odejmowanie macierzy
     @staticmethod
     def matrix_subtraction(matrix1, matrix2):
+        # sprawdzam czy rozmiary macierzy sa odpowiednie
         if matrix1.number_of_rows == matrix2.number_of_rows and matrix1.number_of_columns == matrix2.number_of_columns:
+            # korzystam z metody substract zawartej w bibliotece numpy by otrzymac macierz wynikowa
             r1 = np.subtract(matrix1.matrix_form, matrix2.matrix_form)
             result_matrix = Matrix(matrix1.number_of_rows, matrix2.number_of_columns)
             result_matrix.values = r1.flatten()
@@ -14,9 +18,12 @@ class MatrixOperations:
         else:
             return "Macierze nie mają jednakowych wymiarów, nie można ich odjąć"
 
+    # metoda umozliwiajaca dodawanie macierzy
     @staticmethod
     def matrix_add(matrix1, matrix2):
+        # sprawdzam czy rozmiary macierzy sa odpowiednie
         if matrix1.number_of_rows == matrix2.number_of_rows and matrix1.number_of_columns == matrix2.number_of_columns:
+            # korzystam z metody add zawartej w bibliotece numpy by otrzymac macierz wynikowa
             r1 = np.add(matrix1.matrix_form, matrix2.matrix_form)
             result_matrix = Matrix(matrix1.number_of_rows, matrix2.number_of_columns)
             result_matrix.values = r1.flatten()
@@ -25,9 +32,12 @@ class MatrixOperations:
         else:
             return "Macierze nie mają jednakowych wymiarów, nie można ich dodać"
 
+    # metoda umożliwiajaca mnozenie macierzy
     @staticmethod
     def matrix_multiply(matrix1, matrix2):
+        # sprawdzam czy rozmiary macierzy sa odpowiednie
         if matrix1.number_of_columns == matrix2.number_of_rows:
+            # korzystam z metody dot zawartej w bibliotece numpy by otrzymac macierz wynikowa
             r1 = np.dot(matrix1.matrix_form, matrix2.matrix_form)
             result_matrix = Matrix(matrix1.number_of_rows, matrix2.number_of_columns)
             result_matrix.values = r1.flatten()
@@ -36,40 +46,10 @@ class MatrixOperations:
         else:
             return "Macierze mają nie prawidłowe wymiary, nie można ich pomnożyć"
 
+    # metoda sprawdzajaca czy wynikiem dzialania jest macierz czy komunikat o bledzie
     @staticmethod
     def check_if_matrix(matrix):
         if not isinstance(matrix, str):
             return True
         else:
             return False
-
-
-# if __name__ == '__main__':
-#     operation = MatrixOperations()
-#     matrix1 = Matrix(2, 3, [3, 5, 1, 6, 2, 6])
-#     matrix2 = Matrix(2, 3, [3, 1, 5, 0, 4, 0])
-#
-#     matrix_r1 = operation.matrix_add(matrix1, matrix2)
-#     if operation.check_if_matrix(matrix_r1):
-#         matrix_r1.print_matrix()
-#     else:
-#         print(matrix_r1)
-#
-#     matrix_r2 = operation.matrix_subtraction(matrix1, matrix2)
-#     if operation.check_if_matrix(matrix_r2):
-#         matrix_r2.print_matrix()
-#     else:
-#         print(matrix_r2)
-#
-#     matrix3 = Matrix(3, 2, [10, 6, 30, 5, 15, 5])
-#     matrix_r3 = operation.matrix_multiply(matrix1, matrix3)
-#     if operation.check_if_matrix(matrix_r3):
-#         matrix_r3.print_matrix()
-#     else:
-#         print(matrix_r3)
-#
-#     matrix_r4 = operation.matrix_multiply(matrix1, matrix2)
-#     if operation.check_if_matrix(matrix_r4):
-#         matrix_r4.print_matrix()
-#     else:
-#         print(matrix_r4)
