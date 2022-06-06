@@ -19,17 +19,21 @@ class LimitsGui(CTkFrame):
         self.e_limit = None
         self.end_limit = None
         self.formula = None
+        # wykorzystanie wcześniej wykonanego backend'u
         self.math_ = CalculusAndAnalysis
         self.create()
 
+    # funkcja tworzaca przestrzen pracy dla danego okna
     def create(self):
         self.frame_entry = CTkFrame(self.parent, width=800, height=410, bg_color='white', fg_color='white',
                                     border_color='white')
 
+        # frame z przerwa
         pause0_frame = CTkFrame(self.frame_entry, width=800, height=20, bg_color='white', fg_color='white',
                                 border_color='white')
         pause0_frame.pack()
 
+        # frame z informacja wejsciowa
         info_frame = CTkFrame(self.frame_entry, width=800, height=100, bg_color='white', fg_color='white',
                               border_color='white')
 
@@ -40,10 +44,13 @@ class LimitsGui(CTkFrame):
 
         intro.pack()
         info_frame.pack()
+
+        # frame z przerwa
         pause1_frame = CTkFrame(self.frame_entry, width=800, height=20, bg_color='white', fg_color='white',
                                 border_color='white')
         pause1_frame.pack()
 
+        # frame z informajca odnoszaca sie do wprowadzanej funkcji
         upper_frame = CTkFrame(self.frame_entry, width=800, height=30, bg_color='white', fg_color='white',
                                border_color='white')
 
@@ -60,9 +67,11 @@ class LimitsGui(CTkFrame):
 
         upper_frame.pack()
 
+        # frame funkcji
         frame_fun = CTkFrame(self.frame_entry, width=800, height=83, bg_color='white', fg_color='white',
                              border_color='white')
 
+        # frame z graficznym przedstawieniem granicy
         frame_graphic = CTkFrame(frame_fun, width=225, height=83, bg_color='white', fg_color='white',
                                  border_color='white')
 
@@ -74,6 +83,7 @@ class LimitsGui(CTkFrame):
                                             fg_color='white')
         label_upper_graphic_left.grid(row=0, column=0)
 
+        # wczytanie obrazu granicy
         iconPath = 'images/lim.jpg'
         icon = ImageTk.PhotoImage(Image.open(iconPath))
         icon_size = CTkLabel(frame_upper_graphic, bg_color='white', fg_color='white')
@@ -96,6 +106,7 @@ class LimitsGui(CTkFrame):
                                              fg_color='white')
         label_bottom_graphic_left.grid(row=0, column=0)
 
+        # wczytanie obrazu x dazy do
         iconPath1 = 'images/lim_x.jpg'
         icon1 = ImageTk.PhotoImage(Image.open(iconPath1))
         icon_size1 = CTkLabel(frame_bottom_graphic, bg_color='white', fg_color='white')
@@ -113,6 +124,7 @@ class LimitsGui(CTkFrame):
 
         frame_graphic.grid(row=0, column=0)
 
+        # frame z oknem do ktorego wprowadzamy funkcje
         frame_entry = CTkFrame(frame_fun, width=350, height=83, bg_color='white', fg_color='white',
                                border_color='white')
 
@@ -126,6 +138,7 @@ class LimitsGui(CTkFrame):
 
         frame_fun.pack()
 
+        # frame z przerwa
         pause4_frame = CTkFrame(self.frame_entry, width=800, height=20, bg_color='white', fg_color='white',
                                 border_color='white')
         pause4_frame.pack()
@@ -133,24 +146,30 @@ class LimitsGui(CTkFrame):
         bottom_frame = CTkFrame(self.frame_entry, width=800, height=50, bg_color='white', fg_color='white',
                                 border_color='white')
 
+        # frame z guzikiem ktory przetwarza wyrazenie i zwraca wynik
         accept_button = CTkButton(bottom_frame, text='potwierdź', width=70, command=self.add_widget)
         accept_button.pack()
         bottom_frame.pack()
 
+        # frame z przerwa
         pause5_frame = CTkFrame(self.frame_entry, width=800, height=20, bg_color='white', fg_color='white',
                                 border_color='white')
         pause5_frame.pack()
 
         self.frame_entry.pack()
 
+    # funkcja tworzaca przestrzen wynikowa
     def add_widget(self):
         flag = True
+        # jesli zostala juz wczeniej utworzona (drugie i kolejne wywolania funkcji) kasujemy przestrzen wynikowa
         if self.frame_widget is not None:
             LimitsGui.del_widget(self)
 
+        # tworzenie frame wynikowego
         self.frame_widget = CTkFrame(self.frame_entry, width=800, height=100, bg_color='white smoke',
                                      fg_color='white smoke',
                                      border_color='white smoke')
+        # jesli nie ma punktu granicznego zwracamy komunikat
         if self.e_limit.get() == '':
             tkinter.messagebox.showinfo('Brak granicy', "Nie wprowadzono punktu określającego granice funkcji")
             flag = False
@@ -165,6 +184,7 @@ class LimitsGui(CTkFrame):
                                          "Błędny punkt określający granice, nie jest on liczbą ani nieskończonością")
             flag = False
 
+        # jesli nie ma formuly zwracamy komunikat
         if self.formula.get() == '':
             tkinter.messagebox.showinfo('Brak formuły', "Nie wprowadzono formuły funkcji")
             flag = False
@@ -176,13 +196,14 @@ class LimitsGui(CTkFrame):
             self.frame_widget = CTkFrame(self.frame_entry, width=800, height=100, bg_color='white smoke',
                                          fg_color='white smoke',
                                          border_color='white smoke')
-
+            # frame z przerwa
             frame_pause = CTkFrame(self.frame_widget, width=800, height=10, bg_color='white smoke',
                                    fg_color='white smoke',
                                    border_color='white smoke')
 
             frame_pause.pack()
 
+            # frame z wynikiem obliczen
             frame_result = CTkFrame(self.frame_widget, width=800, height=50, bg_color='white smoke',
                                     fg_color='white smoke',
                                     border_color='white smoke')
@@ -195,8 +216,10 @@ class LimitsGui(CTkFrame):
                 elif self.side.get() == '+' or self.side.get() == '-':
                     self.side_char = self.side.get()
 
+                # wykorzystanie metody zwracajacej wynik dzialania
                 result = self.math_.CalculusAndAnalysis.limits(formula, 'x', self.end_limit, self.side_char)
 
+                # jesli wynik jest stringiem wtedy blad i odpowiednie dzialanie
                 if isinstance(result, str):
 
                     label_r = CTkLabel(frame_result, text='Wynik: ', width=150, height=50,
@@ -226,6 +249,7 @@ class LimitsGui(CTkFrame):
                                                          'Błąd formuły, wystąpił nieoczekiwany błąd, sprawdź poprawność zapisu albo spróbuj ponownie')
                     else:
                         tkinter.messagebox.showerror("Błąd", result)
+                # jesli nie jest stringiem to wtedy wynik prawidlowy i wypisanie
                 else:
                     label_r = CTkLabel(frame_result, text='Wynik: ', width=100, height=50,
                                        bg_color='white smoke', text_font=("Arial Bold", 13),
@@ -249,11 +273,6 @@ class LimitsGui(CTkFrame):
                 tkinter.messagebox.showerror('Błąd',
                                              'Użyto nieprawidłowego znaku do określenia strony, dopuszczalne znaki to: "+" i "-"')
 
+    # metoda odpowiedzialna za niszczenie obszaru wynikowego
     def del_widget(self):
         self.frame_widget.destroy()
-
-
-if __name__ == '__main__':
-    master = Tk()
-    s = LimitsGui(master)
-    s.mainloop()

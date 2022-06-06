@@ -23,17 +23,21 @@ class DualIntegralGui(CTkFrame):
         self.start_limit2 = None
         self.end_limit2 = None
         self.formula = None
+        # wykorzystanie wcześniej wykonanego backend'u
         self.math_ = CalculusAndAnalysis
         self.create()
 
+    # funkcja tworzaca przestrzen pracy dla danego okna
     def create(self):
         self.frame_entry = CTkFrame(self.parent, width=700, height=410, bg_color='white', fg_color='white',
                                     border_color='white')
 
+        # frame z przerwa
         pause0_frame = CTkFrame(self.frame_entry, width=700, height=20, bg_color='white', fg_color='white',
                                 border_color='white')
         pause0_frame.pack()
 
+        # frame z informacja wejsciowa
         info_frame = CTkFrame(self.frame_entry, width=700, height=100, bg_color='white', fg_color='white',
                               border_color='white')
 
@@ -44,10 +48,13 @@ class DualIntegralGui(CTkFrame):
 
         intro.pack()
         info_frame.pack()
+
+        # frame z przerwa
         pause1_frame = CTkFrame(self.frame_entry, width=700, height=20, bg_color='white', fg_color='white',
                                 border_color='white')
         pause1_frame.pack()
 
+        # frame z informajca odnoszaca sie do wprowadzanej funkcji
         upper_frame = CTkFrame(self.frame_entry, width=700, height=30, bg_color='white', fg_color='white',
                                border_color='white')
 
@@ -64,12 +71,14 @@ class DualIntegralGui(CTkFrame):
 
         upper_frame.pack()
 
+        # frame z przerwa
         pause2_frame = CTkFrame(self.frame_entry, width=700, height=40, bg_color='white', fg_color='white',
                                 border_color='white')
 
         left_label = CTkLabel(pause2_frame, text_color='white', width=97, height=40, bg_color='white',
                               fg_color='white')
         left_label.grid(row=0, column=0)
+        # ustalenie limitow calkowania
         self.e_limit1 = CTkEntry(pause2_frame, width=40, height=40)
         self.e_limit1.grid(row=0, column=1)
         self.e_limit2 = CTkEntry(pause2_frame, width=40, height=40)
@@ -79,6 +88,7 @@ class DualIntegralGui(CTkFrame):
         right_label.grid(row=0, column=3)
         pause2_frame.pack()
 
+        # frame funkcji
         formula_frame = CTkFrame(self.frame_entry, width=700, height=64, bg_color='white', fg_color='white',
                                  border_color='white')
 
@@ -87,6 +97,7 @@ class DualIntegralGui(CTkFrame):
 
         left2_label.grid(row=0, column=0)
 
+        # wstawienie obrazka calki podwojnej
         iconPath = 'images/dual_integral.jpg'
         icon = ImageTk.PhotoImage(Image.open(iconPath))
         icon_size = CTkLabel(formula_frame, bg_color='white', fg_color='white')
@@ -94,9 +105,11 @@ class DualIntegralGui(CTkFrame):
         icon_size.configure(image=icon)
         icon_size.grid(row=0, column=1)
 
+        # okno do wprowadzenia formuly
         self.formula = CTkEntry(formula_frame, width=350, height=64)
         self.formula.grid(row=0, column=2)
 
+        # wstawienie obrazka calkowania po dxdy
         iconPath1 = 'images/dxdy.jpg'
         icon1 = ImageTk.PhotoImage(Image.open(iconPath1))
         icon_size1 = CTkLabel(formula_frame, bg_color='white', fg_color='white')
@@ -111,12 +124,15 @@ class DualIntegralGui(CTkFrame):
 
         formula_frame.pack()
 
+        # frame z przerwa
         pause3_frame = CTkFrame(self.frame_entry, width=700, height=40, bg_color='white', fg_color='white',
                                 border_color='white')
 
         left3_label = CTkLabel(pause3_frame, text_color='white', width=97, height=40, bg_color='white',
                                fg_color='white')
         left3_label.grid(row=0, column=0)
+
+        # ustalenie limitow calkowania
         self.s_limit1 = CTkEntry(pause3_frame, width=40, height=40)
         self.s_limit1.grid(row=0, column=1)
         self.s_limit2 = CTkEntry(pause3_frame, width=40, height=40)
@@ -127,10 +143,12 @@ class DualIntegralGui(CTkFrame):
         right3_label.grid(row=0, column=3)
         pause3_frame.pack()
 
+        # frame z przerwa
         pause4_frame = CTkFrame(self.frame_entry, width=500, height=20, bg_color='white', fg_color='white',
                                 border_color='white')
         pause4_frame.pack()
 
+        # frame z guzikiem ktory przetwarza wyrazenie i zwraca wynik
         bottom_frame = CTkFrame(self.frame_entry, width=700, height=50, bg_color='white', fg_color='white',
                                 border_color='white')
 
@@ -138,34 +156,42 @@ class DualIntegralGui(CTkFrame):
         accept_button.pack()
         bottom_frame.pack()
 
+        # frame z przerwa
         pause5_frame = CTkFrame(self.frame_entry, width=500, height=20, bg_color='white', fg_color='white',
                                 border_color='white')
         pause5_frame.pack()
 
         self.frame_entry.pack()
 
+    # funkcja tworzaca przestrzen wynikowa
     def add_widget(self):
 
+        # jesli nie ma formuly zwracamy komunikat
         if self.formula.get() == '':
             tkinter.messagebox.showinfo('Brak formuły', "Nie wprowadzono formuły funkcji")
         else:
+            # jesli zostala juz wczeniej utworzona (drugie i kolejne wywolania funkcji) kasujemy przestrzen wynikowa
             if self.frame_widget is not None:
                 DualIntegralGui.del_widget(self)
 
+            # tworzenie frame wynikowego
             self.frame_widget = CTkFrame(self.frame_entry, width=700, height=100, bg_color='white smoke',
                                          fg_color='white smoke',
                                          border_color='white smoke')
 
-            frame_pause = CTkFrame(self.frame_widget, width=700, height=10, bg_color='white smoke', fg_color='white smoke',
+            frame_pause = CTkFrame(self.frame_widget, width=700, height=10, bg_color='white smoke',
+                                   fg_color='white smoke',
                                    border_color='white smoke')
 
             frame_pause.pack()
 
-            frame_result = CTkFrame(self.frame_widget, width=700, height=50, bg_color='white smoke', fg_color='white smoke',
+            frame_result = CTkFrame(self.frame_widget, width=700, height=50, bg_color='white smoke',
+                                    fg_color='white smoke',
                                     border_color='white smoke')
 
             formula = self.formula.get()
 
+            # sprawdzenie poprawnosci granic calkowania
             if self.s_limit1.get() == '':
                 self.start_limit1 = None
             elif self.s_limit1.get().isdigit():
@@ -214,9 +240,12 @@ class DualIntegralGui(CTkFrame):
                 tkinter.messagebox.showerror('Błąd',
                                              "Błędna druga górna granica całkowania, nie jest ona liczbą ani nieskończonością")
 
-            result = self.math_.CalculusAndAnalysis.dual_integration(formula, 'x', 'y', self.start_limit1, self.end_limit1,
+            # wykorzystanie metody zwracajacej wynik dzialania
+            result = self.math_.CalculusAndAnalysis.dual_integration(formula, 'x', 'y', self.start_limit1,
+                                                                     self.end_limit1,
                                                                      self.start_limit2, self.end_limit2)
 
+            # jesli wynik jest stringiem wtedy blad i odpowiednie dzialanie
             if isinstance(result, str):
 
                 label_r = CTkLabel(frame_result, text='Wynik: ', width=350, height=50,
@@ -244,6 +273,7 @@ class DualIntegralGui(CTkFrame):
                                                      'Błąd formuły, wystąpił nieoczekiwany błąd, sprawdź poprawność zapisu albo spróbuj ponownie')
                 else:
                     tkinter.messagebox.showerror("Błąd", result)
+            # jesli nie jest stringiem to wtedy wynik prawidlowy i wypisanie
             else:
                 label_r = CTkLabel(frame_result, text='Wynik: ', width=350, height=50,
                                    bg_color='white smoke', text_font=("Arial Bold", 13),
@@ -257,17 +287,13 @@ class DualIntegralGui(CTkFrame):
 
             frame_result.pack()
 
-            frame_pause1 = CTkFrame(self.frame_widget, width=700, height=10, bg_color='white smoke', fg_color='white smoke',
+            frame_pause1 = CTkFrame(self.frame_widget, width=700, height=10, bg_color='white smoke',
+                                    fg_color='white smoke',
                                     border_color='white smoke')
 
             frame_pause1.pack()
             self.frame_widget.pack()
 
+    # metoda odpowiedzialna za niszczenie obszaru wynikowego
     def del_widget(self):
         self.frame_widget.destroy()
-
-
-if __name__ == '__main__':
-    master = Tk()
-    s = DualIntegralGui(master)
-    s.mainloop()

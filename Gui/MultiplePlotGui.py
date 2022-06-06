@@ -19,6 +19,7 @@ class MultiplePlotGui(CTkFrame):
         self.frame_formula = None
         self.formula_list = []
         self.if_grid = False
+        # wykorzystanie wcześniej wykonanego backend'u
         self.chart = Program_logic.ChartCreator.ChartCreator()
         self.start_w = self.chart.start_w
         self.stop_w = self.chart.stop_w
@@ -26,14 +27,17 @@ class MultiplePlotGui(CTkFrame):
         self.stop_h = self.chart.stop_h
         self.create()
 
+    # funkcja tworzaca przestrzen pracy dla danego okna
     def create(self):
         self.frame_entry = CTkFrame(self.parent, width=600, height=800, bg_color='white', fg_color='white',
                                     border_color='white')
 
+        # frame z przerwa
         pause0_frame = CTkFrame(self.frame_entry, width=600, height=20, bg_color='white', fg_color='white',
                                 border_color='white')
         pause0_frame.pack()
 
+        # frame z informacja wejsciowa
         info_frame = CTkFrame(self.frame_entry, width=600, height=100, bg_color='white', fg_color='white',
                               border_color='white')
 
@@ -42,10 +46,13 @@ class MultiplePlotGui(CTkFrame):
 
         intro.pack()
         info_frame.pack()
+
+        # frame z przerwa
         pause1_frame = CTkFrame(self.frame_entry, width=600, height=20, bg_color='white', fg_color='white',
                                 border_color='white')
         pause1_frame.pack()
 
+        # frame z informajca odnoszaca sie do ilosci funkcji ktore program ma narysowac
         upper_frame = CTkFrame(self.frame_entry, width=600, height=30, bg_color='white', fg_color='white',
                                border_color='white')
 
@@ -62,11 +69,13 @@ class MultiplePlotGui(CTkFrame):
 
         upper_frame.pack()
 
+        # frame z przerwa
         pause2_frame = CTkFrame(self.frame_entry, width=600, height=10, bg_color='white', fg_color='white',
                                 border_color='white')
 
         pause2_frame.pack()
 
+        # frame z comboboxem sluzacym do wybrania ilosci funkcji do narysowania
         combobox_frame = CTkFrame(self.frame_entry, width=600, height=50, bg_color='white', fg_color='white',
                                   border_color='white')
 
@@ -89,6 +98,7 @@ class MultiplePlotGui(CTkFrame):
 
         combobox_frame.pack()
 
+        # metoda odpowiedzialna za dzialanie comboboxa i reagujaca na zmiany
         def number_changed(event):
             self.number_of_plots = selected_number.get()
             self.window_for_formula()
@@ -102,6 +112,7 @@ class MultiplePlotGui(CTkFrame):
 
         self.frame_entry.pack()
 
+    # metoda odpowiedzialna za utworzenie okna z zawartoscia okien wejsciowych do ktorych mozna wpisac wybrana ilosc formul
     def window_for_formula(self):
         newWindow = Toplevel(self.parent)
         newWindow.title('Wprowadź formuły')
@@ -184,15 +195,19 @@ class MultiplePlotGui(CTkFrame):
 
         self.frame_formula.pack()
 
+    # funkcja tworzaca przestrzen wynikowa
     def add_widget(self):
         flag = True
+        # jesli zostala juz wczeniej utworzona (drugie i kolejne wywolania funkcji) kasujemy przestrzen wynikowa
         if self.frame_widget is not None:
             MultiplePlotGui.del_widget(self)
 
+        # tworzenie frame wynikowego
         self.frame_widget = CTkFrame(self.frame_entry, width=600, height=600, bg_color='white',
                                      fg_color='white',
                                      border_color='white')
 
+        # jesli nie ma jednej z formul zwracamy komunikat
         for i in range(len(self.formula_list)):
             if self.formula_list[i].get() == '':
                 tkinter.messagebox.showinfo('Brak formuły',
@@ -211,14 +226,17 @@ class MultiplePlotGui(CTkFrame):
             for elem in range(len(self.formula_list)):
                 formula_list.append(self.formula_list[elem].get())
 
+            # wykorzystanie metody zwracajacej obraz wielu funkcji jednej zmiennej
             fig = self.chart.plot_a_several_function(self.start_w, self.stop_w,
                                                      self.if_grid, formula_list)
 
             if self.chart.info == 'done':
+                # przypisanie obrazu funkcji do kanwy
                 canvas = FigureCanvasTkAgg(fig, master=self.frame_widget)
                 canvas.draw()
                 canvas.get_tk_widget().pack()
 
+                # frame z guzikami sluzacymi do zmiany wymiarow osi x
                 bottom_frame = CTkFrame(self.frame_widget, width=600, height=100, bg_color='white',
                                         fg_color='white',
                                         border_color='white')
@@ -233,10 +251,12 @@ class MultiplePlotGui(CTkFrame):
 
                 frame_buttons.grid(row=0, column=0)
 
+                # frame z przerwa
                 frame_pause = CTkFrame(bottom_frame, width=400, height=100, bg_color='white',
                                        fg_color='white',
                                        border_color='white')
 
+                # frame z guzikiem ktorym mozemy wybierac czy chcemy aby wykres zawieral siatke
                 frame_grid = CTkFrame(bottom_frame, width=100, height=100, bg_color='white',
                                       fg_color='white',
                                       border_color='white')
@@ -246,6 +266,7 @@ class MultiplePlotGui(CTkFrame):
                 frame_pause.grid(row=0, column=1)
                 frame_grid.grid(row=0, column=2)
                 bottom_frame.pack()
+            # obsluga bledow i wyswietlanie komunikatow
             else:
                 if 'syntax error' in self.chart.info:
                     info = self.chart.info.replace('syntax error in ', '')
@@ -266,6 +287,7 @@ class MultiplePlotGui(CTkFrame):
 
             self.frame_widget.pack()
 
+    # metoda odpowiadajaca za dzialanie guzika + wzgledem osi x
     def plus_button(self):
         self.chart.change_size_w(True)
         self.start_w = self.chart.start_w
@@ -274,6 +296,7 @@ class MultiplePlotGui(CTkFrame):
         self.stop_h = self.chart.stop_h
         self.add_widget()
 
+    # metoda odpowiadajaca za dzialanie guzika - wzgledem osi x
     def minus_button(self):
         self.chart.change_size_w(False)
         self.start_w = self.chart.start_w
@@ -282,6 +305,7 @@ class MultiplePlotGui(CTkFrame):
         self.stop_h = self.chart.stop_h
         self.add_widget()
 
+    # funkcja odpowiedzialna za zmiane wykresu - dodanie/usuniecie siatki
     def change_grid(self):
         if self.if_grid:
             self.if_grid = False
@@ -289,11 +313,6 @@ class MultiplePlotGui(CTkFrame):
             self.if_grid = True
         self.add_widget()
 
+    # metoda odpowiedzialna za niszczenie obszaru wynikowego
     def del_widget(self):
         self.frame_widget.destroy()
-
-
-if __name__ == '__main__':
-    master = Tk()
-    s = MultiplePlotGui(master)
-    s.mainloop()

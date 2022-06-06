@@ -16,17 +16,21 @@ class DifferentiationGui(CTkFrame):
         self.parent.resizable(False, False)
         self.formula = None
         self.symbol = None
+        # wykorzystanie wcześniej wykonanego backend'u
         self.math_ = CalculusAndAnalysis
         self.create()
 
+    # funkcja tworzaca przestrzen pracy dla danego okna
     def create(self):
         self.frame_entry = CTkFrame(self.parent, width=800, height=410, bg_color='white', fg_color='white',
                                     border_color='white')
 
+        # frame z przerwa
         pause0_frame = CTkFrame(self.frame_entry, width=700, height=20, bg_color='white', fg_color='white',
                                 border_color='white')
         pause0_frame.pack()
 
+        # frame z informacja wejsciowa
         info_frame = CTkFrame(self.frame_entry, width=700, height=100, bg_color='white', fg_color='white',
                               border_color='white')
 
@@ -36,10 +40,12 @@ class DifferentiationGui(CTkFrame):
         intro.pack()
         info_frame.pack()
 
+        # frame z przerwa
         pause1_frame = CTkFrame(self.frame_entry, width=800, height=20, bg_color='white', fg_color='white',
                                 border_color='white')
         pause1_frame.pack()
 
+        # frame z informajca odnoszaca sie do wprowadzanej funkcji
         upper_frame = CTkFrame(self.frame_entry, width=800, height=30, bg_color='white', fg_color='white',
                                border_color='white')
 
@@ -56,10 +62,12 @@ class DifferentiationGui(CTkFrame):
 
         upper_frame.pack()
 
+        # frame z przerwa
         pause2_frame = CTkFrame(self.frame_entry, width=800, height=20, bg_color='white', fg_color='white',
                                 border_color='white')
         pause2_frame.pack()
 
+        # frame funkcji
         function_frame = CTkFrame(self.frame_entry, width=800, height=43, bg_color='white', fg_color='white',
                                   border_color='white')
 
@@ -68,6 +76,7 @@ class DifferentiationGui(CTkFrame):
 
         label_left.grid(row=0, column=0)
 
+        # wstawienie obrazka pochodnej
         iconPath1 = 'images/f_.jpg'
         icon1 = ImageTk.PhotoImage(Image.open(iconPath1))
         icon_size1 = CTkLabel(function_frame, bg_color='white', fg_color='white')
@@ -75,10 +84,12 @@ class DifferentiationGui(CTkFrame):
         icon_size1.configure(image=icon1)
         icon_size1.grid(row=0, column=1)
 
+        # okreslenie zmiennej pochodnej
         self.symbol = CTkEntry(function_frame, width=40, height=43)
 
         self.symbol.grid(row=0, column=2)
 
+        # wstawienie obrazka pochodnej 2
         iconPath2 = 'images/bracket.jpg'
         icon2 = ImageTk.PhotoImage(Image.open(iconPath2))
         icon_size2 = CTkLabel(function_frame, bg_color='white', fg_color='white')
@@ -91,6 +102,7 @@ class DifferentiationGui(CTkFrame):
                             fg_color='white')
         label_eq.grid(row=0, column=4)
 
+        # wprowadzenie formuły funkcji
         self.formula = CTkEntry(function_frame, width=350, height=43)
 
         self.formula.grid(row=0, column=5)
@@ -102,10 +114,12 @@ class DifferentiationGui(CTkFrame):
 
         function_frame.pack()
 
+        # frame z przerwa
         pause4_frame = CTkFrame(self.frame_entry, width=800, height=20, bg_color='white', fg_color='white',
                                 border_color='white')
         pause4_frame.pack()
 
+        # frame z guzikiem ktory przetwarza wyrazenie i zwraca wynik
         bottom_frame = CTkFrame(self.frame_entry, width=800, height=50, bg_color='white', fg_color='white',
                                 border_color='white')
 
@@ -113,23 +127,28 @@ class DifferentiationGui(CTkFrame):
         accept_button.pack()
         bottom_frame.pack()
 
+        # frame z przerwa
         pause5_frame = CTkFrame(self.frame_entry, width=800, height=20, bg_color='white', fg_color='white',
                                 border_color='white')
         pause5_frame.pack()
 
         self.frame_entry.pack()
 
+    # funkcja tworzaca przestrzen wynikowa
     def add_widget(self):
 
+        # jesli nie ma formuly zwracamy komunikat
         if self.formula.get() == '':
             tkinter.messagebox.showinfo('Brak formuły', "Nie wprowadzono formuły funkcji")
-
+        # jesli nie ma symbolu zwracamy komunikat
         elif self.symbol.get() == '':
             tkinter.messagebox.showinfo('Brak symbolu', "Nie wprowadzono symbolu funkcji")
         else:
+            # jesli zostala juz wczeniej utworzona (drugie i kolejne wywolania funkcji) kasujemy przestrzen wynikowa
             if self.frame_widget is not None:
                 DifferentiationGui.del_widget(self)
 
+            # tworzenie frame wynikowego
             self.frame_widget = CTkFrame(self.frame_entry, width=800, height=100, bg_color='white smoke',
                                          fg_color='white smoke',
                                          border_color='white smoke')
@@ -146,8 +165,10 @@ class DifferentiationGui(CTkFrame):
 
             formula = self.formula.get()
 
+            # wykorzystanie metody zwracajacej wynik dzialania
             result = self.math_.CalculusAndAnalysis.differentiation(formula, self.symbol.get())
 
+            # jesli wynik zawiera podstring error wtedy blad i odpowiednie dzialanie
             if 'error' in result:
                 if result == 'syntax error':
                     tkinter.messagebox.showerror('Błąd formuły', '''Błąd formuły, wystąpił błąd składni formuły''')
@@ -162,8 +183,10 @@ class DifferentiationGui(CTkFrame):
                 else:
                     tkinter.messagebox.showerror('Błąd formuły',
                                                  'Błąd formuły, wystąpił nieoczekiwany błąd, sprawdź poprawność zapisu albo spróbuj ponownie')
+            # jesli wynik zawiera podstring formula wtedy blad i odpowiednie dzialanie
             elif 'formuła' in result:
                 tkinter.messagebox.showerror('Błąd formuły', result)
+            # w przecwinym przypadku wynik prawidlowy i wypisanie
             else:
 
                 label_r = CTkLabel(frame_result, text='Wynik: ', width=100, height=50,
@@ -185,11 +208,6 @@ class DifferentiationGui(CTkFrame):
             frame_pause1.pack()
             self.frame_widget.pack()
 
+    # metoda odpowiedzialna za niszczenie obszaru wynikowego
     def del_widget(self):
         self.frame_widget.destroy()
-
-
-if __name__ == '__main__':
-    master = Tk()
-    s = DifferentiationGui(master)
-    s.mainloop()

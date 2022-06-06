@@ -30,21 +30,25 @@ class MenuGui(CTkFrame):
         self.parent.rowconfigure(0, weight=9999)
         self.parent.rowconfigure(1, weight=1)
 
+    # metoda odpowiedzialna za zamykanie programu
     def file_quit(self):
         reply = tkinter.messagebox.askyesno("End", "Do you want to quit", parent=self.parent)
         if reply:
             self.parent.destroy()
 
+    # metoda tworząca obszar pracy
     def create_work_place(self):
         self.frame = CTkFrame(self.parent, width=1700, height=1500, bg_color='white', fg_color='white',
                               border_color='white')
 
         upper_frame = CTkFrame(self.frame)
 
+        # frame z przerwa
         pause_frame1_ = CTkFrame(self.frame, height=30, width=1700, bg_color='white', fg_color='white',
                                  border_color='white')
         pause_frame1_.pack()
 
+        # dodanie loga programu
         iconPath = "images/menu_image.jpg"
         icon = ImageTk.PhotoImage(Image.open(iconPath))
         icon_size = CTkLabel(upper_frame, bg_color='white', fg_color='white')
@@ -54,10 +58,12 @@ class MenuGui(CTkFrame):
 
         upper_frame.pack()
 
+        # frame z przerwa
         pause_frame2_ = CTkFrame(self.frame, height=30, width=1700, bg_color='white', fg_color='white',
                                  border_color='white')
         pause_frame2_.pack()
 
+        # frame z guzikami otwierajcaymi poszczegolne funkcjonalnosci
         middle_frame = CTkFrame(self.frame, height=500, width=1700, bg_color='white', fg_color='white',
                                 border_color='white')
 
@@ -130,12 +136,14 @@ class MenuGui(CTkFrame):
 
         middle_frame.pack()
 
+        # frame z przerwa
         bottom_frame = CTkFrame(self.frame, height=100, width=1700, bg_color='white', fg_color='white',
                                 border_color='white')
         bottom_frame.pack()
 
         self.frame.grid(row=1, column=0, columnspan=1, rowspan=1, sticky=NSEW)
 
+    # funkcja otwierajaca okno gui z funkcja rysowania jednej zmiennej
     def plot_one_variable(self):
         newWindow = Toplevel(self.parent)
         newWindow.title('Wykres jednej zmiennej')
@@ -153,6 +161,7 @@ class MenuGui(CTkFrame):
 
         OneVariableFunctionGui(newWindow)
 
+    # funkcja otwierajaca okno gui z funkcja rysowania jednej zmiennej na skali logarytmicznej
     def plot_logarithmic_scale(self):
         newWindow = Toplevel(self.parent)
         newWindow.title('Wykres na skali logarytmicznej')
@@ -170,6 +179,7 @@ class MenuGui(CTkFrame):
 
         LogarythmicScaleGui(newWindow)
 
+    # funkcja otwierajaca okno gui z funkcja rysowania kilku wykresow jednej zmiennej
     def plot_few_function(self):
         newWindow = Toplevel(self.parent)
         newWindow.title('Kilka funkcji na jednym wykresie')
@@ -187,6 +197,7 @@ class MenuGui(CTkFrame):
 
         MultiplePlotGui(newWindow)
 
+    # funkcja otwierajaca okno gui z funkcja rysowania dwoch zmiennych
     def plot_two_variables(self):
         newWindow = Toplevel(self.parent)
         newWindow.title('Wykres dwóch zmiennych')
@@ -204,6 +215,7 @@ class MenuGui(CTkFrame):
 
         TwoVariableFunctionGui(newWindow)
 
+    # funkcja otwierajaca okno gui z operacjami na pojedynczej macierzy
     def operation_on_single_matrix(self):
         newWindow = Toplevel(self.parent)
         newWindow.title('Operacje na pojedyńczej macierzy')
@@ -221,6 +233,7 @@ class MenuGui(CTkFrame):
 
         SingleMatrixGui(newWindow)
 
+    # funkcja otwierajaca okno gui z operacjami na macierzach
     def operation_on_two_matrix(self):
         newWindow = Toplevel(self.parent)
         newWindow.title('Operacje na macierzach')
@@ -238,6 +251,7 @@ class MenuGui(CTkFrame):
 
         DualMatrixGui(newWindow)
 
+    # funkcja otwierajaca okno gui z obliczaniem pojedynczej calki
     def integral(self):
         newWindow = Toplevel(self.parent)
         newWindow.title('Całkowanie')
@@ -255,6 +269,7 @@ class MenuGui(CTkFrame):
 
         IntegralGui(newWindow)
 
+    # funkcja otwierajaca okno gui z obliczaniem pochodnej
     def different(self):
         newWindow = Toplevel(self.parent)
         newWindow.title('Różniczkowanie')
@@ -272,6 +287,7 @@ class MenuGui(CTkFrame):
 
         DifferentiationGui(newWindow)
 
+    # funkcja otwierajaca okno gui z obliczaniem granicy
     def limit(self):
         newWindow = Toplevel(self.parent)
         newWindow.title('Granice')
@@ -289,6 +305,7 @@ class MenuGui(CTkFrame):
 
         LimitsGui(newWindow)
 
+    # funkcja otwierajaca okno gui z obliczaniem podwojnej calki
     def dual_integral(self):
         newWindow = Toplevel(self.parent)
         newWindow.title('Całki podwójne')
