@@ -51,6 +51,7 @@ class Matrix:
 class SquareMatrix(Matrix):
     def __init__(self, dimension):
         super().__init__(dimension, dimension)
+        self.dimension = dimension
 
     # metoda obliczajaca wyznacznik macierzy z pomoca funkcji linalg.det z biblioteki numpy
     def calculate_determinant_of_the_matrix(self):
@@ -63,3 +64,6 @@ class SquareMatrix(Matrix):
             return np.linalg.inv(self.matrix_form)
         else:
             return "Wyznacznik jest równy 0, nie ma macierzy odwrotnej"
+
+    def print_matrix(self):
+        print("Matrix {0}x{0}: \n".format(self.dimension), self.matrix_form)

@@ -84,11 +84,11 @@ class SingleMatrixGui(CTkFrame):
         frame_pause.pack()
 
         # jesli wprowadzona ilosc kolumn nie jest cyfra wieksza od 0 to komunikat
-        if not self.col_size.get().isdigit():
+        if not self.col_size.get().isdigit() or self.col_size.get() == '0':
             tkinter.messagebox.showerror("Błąd danych",
                                          "dana wprowadzona do pola odpowiadającego za ilość kolumn nie jest liczbą większą od 0")
         # jesli wprowadzona ilosc rzedow nie jest cyfra wieksza od 0 to komunikat
-        elif not self.row_size.get().isdigit():
+        elif not self.row_size.get().isdigit() or self.row_size.get() == '0':
             tkinter.messagebox.showerror("Błąd danych",
                                          "dana wprowadzona do pola odpowiadającego za ilość rzędów nie jest liczbą większą od 0")
         else:

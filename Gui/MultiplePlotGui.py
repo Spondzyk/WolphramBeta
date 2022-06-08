@@ -215,13 +215,6 @@ class MultiplePlotGui(CTkFrame):
                 flag = False
 
         if flag:
-            if self.frame_widget is not None:
-                MultiplePlotGui.del_widget(self)
-
-            self.frame_widget = CTkFrame(self.frame_entry, width=600, height=600, bg_color='white',
-                                         fg_color='white',
-                                         border_color='white')
-
             formula_list = []
             for elem in range(len(self.formula_list)):
                 formula_list.append(self.formula_list[elem].get())

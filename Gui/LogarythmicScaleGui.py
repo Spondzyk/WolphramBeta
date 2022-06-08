@@ -131,13 +131,6 @@ class LogarythmicScaleGui(CTkFrame):
             flag = False
 
         if flag:
-            if self.frame_widget is not None:
-                LogarythmicScaleGui.del_widget(self)
-
-            self.frame_widget = CTkFrame(self.frame_entry, width=600, height=600, bg_color='white',
-                                         fg_color='white',
-                                         border_color='white')
-            # wykorzystanie metody zwracajacej obraz funkcji jednej zmiennej
             fig = self.chart.plot_a_function_on_a_logarithmic_scale(self.formula.get(), self.start_w, self.stop_w,
                                                                     self.if_grid)
 

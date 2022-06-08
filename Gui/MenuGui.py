@@ -85,7 +85,7 @@ class MenuGui(CTkFrame):
                                      text_font=("Arial Bold", 10), command=self.plot_logarithmic_scale)
         log_scale_button.grid(column=0, row=3)
 
-        few_function_button = CTkButton(middle_frame, text="Few plots on one picture", width=200, height=25,
+        few_function_button = CTkButton(middle_frame, text="Multiple plots on one picture", width=200, height=25,
                                         text_font=("Arial Bold", 10), command=self.plot_few_function)
         few_function_button.grid(column=0, row=4)
 
@@ -126,7 +126,7 @@ class MenuGui(CTkFrame):
                                          text_font=("Arial Bold", 10), command=self.dual_integral)
         dual_integral_button.grid(column=4, row=3)
 
-        different_button = CTkButton(middle_frame, text="Different", width=200, height=25,
+        different_button = CTkButton(middle_frame, text="Differentation", width=200, height=25,
                                      text_font=("Arial Bold", 10), command=self.different)
         different_button.grid(column=4, row=4)
 

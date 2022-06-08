@@ -12,7 +12,7 @@ class DualIntegralGui(CTkFrame):
         CTkFrame.__init__(self, master)
         self.frame_widget = None
         self.parent = master
-        self.parent.geometry("{}x{}".format(700, 410))
+        self.parent.geometry("{}x{}".format(700, 460))
         self.parent.resizable(False, False)
         self.s_limit1 = None
         self.e_limit1 = None
@@ -23,6 +23,7 @@ class DualIntegralGui(CTkFrame):
         self.start_limit2 = None
         self.end_limit2 = None
         self.formula = None
+        self.last_logs_results = DualIntegralGui.read_formula_file(self)
         # wykorzystanie wcześniej wykonanego backend'u
         self.math_ = CalculusAndAnalysis
         self.create()
@@ -36,6 +37,22 @@ class DualIntegralGui(CTkFrame):
         pause0_frame = CTkFrame(self.frame_entry, width=700, height=20, bg_color='white', fg_color='white',
                                 border_color='white')
         pause0_frame.pack()
+
+        button_log_frame = CTkFrame(self.frame_entry, width=800, height=50, bg_color='white', fg_color='white',
+                                    border_color='white')
+
+        label_pau = CTkLabel(button_log_frame, text_color='white', width=500, height=30, bg_color='white',
+                             fg_color='white')
+        log_button = CTkButton(button_log_frame, text='pokaż ostatnie działania', width=150,
+                               command=self.show_last_logs)
+        label_pau.grid(row=0, column=0)
+        log_button.grid(row=0, column=1)
+        button_log_frame.pack()
+
+        # frame z przerwa
+        pause__frame = CTkFrame(self.frame_entry, width=800, height=20, bg_color='white', fg_color='white',
+                                border_color='white')
+        pause__frame.pack()
 
         # frame z informacja wejsciowa
         info_frame = CTkFrame(self.frame_entry, width=700, height=100, bg_color='white', fg_color='white',
@@ -191,6 +208,7 @@ class DualIntegralGui(CTkFrame):
 
             formula = self.formula.get()
 
+            flag = True
             # sprawdzenie poprawnosci granic calkowania
             if self.s_limit1.get() == '':
                 self.start_limit1 = None
@@ -203,6 +221,7 @@ class DualIntegralGui(CTkFrame):
             else:
                 tkinter.messagebox.showerror('Błąd',
                                              "Błędna pierwsza dolna granica całkowania, nie jest ona liczbą ani nieskończonością")
+                flag = False
 
             if self.e_limit1.get() == '':
                 self.end_limit1 = None
@@ -215,6 +234,7 @@ class DualIntegralGui(CTkFrame):
             else:
                 tkinter.messagebox.showerror('Błąd',
                                              "Błędna pierwsza górna granica całkowania, nie jest ona liczbą ani nieskończonością")
+                flag = False
 
             if self.s_limit2.get() == '':
                 self.start_limit2 = None
@@ -227,6 +247,7 @@ class DualIntegralGui(CTkFrame):
             else:
                 tkinter.messagebox.showerror('Błąd',
                                              "Błędna druga dolna granica całkowania, nie jest ona liczbą ani nieskończonością")
+                flag = False
 
             if self.e_limit2.get() == '':
                 self.end_limit2 = None
@@ -239,61 +260,113 @@ class DualIntegralGui(CTkFrame):
             else:
                 tkinter.messagebox.showerror('Błąd',
                                              "Błędna druga górna granica całkowania, nie jest ona liczbą ani nieskończonością")
+                flag = False
 
-            # wykorzystanie metody zwracajacej wynik dzialania
-            result = self.math_.CalculusAndAnalysis.dual_integration(formula, 'x', 'y', self.start_limit1,
-                                                                     self.end_limit1,
-                                                                     self.start_limit2, self.end_limit2)
+            if flag:
+                # wykorzystanie metody zwracajacej wynik dzialania
+                result = self.math_.CalculusAndAnalysis.dual_integration(formula, 'x', 'y', self.start_limit1,
+                                                                         self.end_limit1,
+                                                                         self.start_limit2, self.end_limit2)
 
-            # jesli wynik jest stringiem wtedy blad i odpowiednie dzialanie
-            if isinstance(result, str):
+                # jesli wynik jest stringiem wtedy blad i odpowiednie dzialanie
+                if isinstance(result, str):
 
-                label_r = CTkLabel(frame_result, text='Wynik: ', width=350, height=50,
-                                   bg_color='white smoke', text_font=("Arial Bold", 13),
-                                   fg_color='white smoke')
-                label_r.grid(row=0, column=0)
-
-                label_final = CTkLabel(frame_result, text='Wystąpił błąd', width=350, height=50,
+                    label_r = CTkLabel(frame_result, text='Wynik: ', width=350, height=50,
                                        bg_color='white smoke', text_font=("Arial Bold", 13),
                                        fg_color='white smoke')
-                label_final.grid(row=0, column=1)
+                    label_r.grid(row=0, column=0)
 
-                if 'error' in result:
-                    if result == 'syntax error':
-                        tkinter.messagebox.showerror('Błąd formuły', '''Błąd formuły, wystąpił błąd składni formuły''')
-                    elif result == 'name error':
-                        tkinter.messagebox.showerror('Błąd formuły',
-                                                     'Błąd formuły, funkcja musi być funkcją zależną od zmiennej x i/lub y')
-                    elif result == "zero division error":
-                        tkinter.messagebox.showerror('Błąd formuły', "Błąd formuły, wystąpiła próba dzielenia przez 0")
-                    elif result == "type error":
-                        tkinter.messagebox.showerror('Błąd formuły', "Błąd formuły, wystąpił błąd typu")
+                    label_final = CTkLabel(frame_result, text='Wystąpił błąd', width=350, height=50,
+                                           bg_color='white smoke', text_font=("Arial Bold", 13),
+                                           fg_color='white smoke')
+                    label_final.grid(row=0, column=1)
+
+                    if 'error' in result:
+                        if result == 'syntax error':
+                            tkinter.messagebox.showerror('Błąd formuły',
+                                                         '''Błąd formuły, wystąpił błąd składni formuły''')
+                        elif result == 'name error':
+                            tkinter.messagebox.showerror('Błąd formuły',
+                                                         'Błąd formuły, funkcja musi być funkcją zależną od zmiennej x i/lub y')
+                        elif result == "zero division error":
+                            tkinter.messagebox.showerror('Błąd formuły',
+                                                         "Błąd formuły, wystąpiła próba dzielenia przez 0")
+                        elif result == "type error":
+                            tkinter.messagebox.showerror('Błąd formuły', "Błąd formuły, wystąpił błąd typu")
+                        else:
+                            tkinter.messagebox.showerror('Błąd formuły',
+                                                         'Błąd formuły, wystąpił nieoczekiwany błąd, sprawdź poprawność zapisu albo spróbuj ponownie')
+                        self.add_log_to_file(formula, result)
                     else:
-                        tkinter.messagebox.showerror('Błąd formuły',
-                                                     'Błąd formuły, wystąpił nieoczekiwany błąd, sprawdź poprawność zapisu albo spróbuj ponownie')
+                        self.add_log_to_file(formula, result)
+                        tkinter.messagebox.showerror("Błąd", result)
+                # jesli nie jest stringiem to wtedy wynik prawidlowy i wypisanie
                 else:
-                    tkinter.messagebox.showerror("Błąd", result)
-            # jesli nie jest stringiem to wtedy wynik prawidlowy i wypisanie
-            else:
-                label_r = CTkLabel(frame_result, text='Wynik: ', width=350, height=50,
-                                   bg_color='white smoke', text_font=("Arial Bold", 13),
-                                   fg_color='white smoke')
-                label_r.grid(row=0, column=0)
-
-                label_final = CTkLabel(frame_result, text=result, width=350, height=50,
+                    label_r = CTkLabel(frame_result, text='Wynik: ', width=350, height=50,
                                        bg_color='white smoke', text_font=("Arial Bold", 13),
                                        fg_color='white smoke')
-                label_final.grid(row=0, column=1)
+                    label_r.grid(row=0, column=0)
 
-            frame_result.pack()
+                    label_final = CTkLabel(frame_result, text=result, width=350, height=50,
+                                           bg_color='white smoke', text_font=("Arial Bold", 13),
+                                           fg_color='white smoke')
+                    label_final.grid(row=0, column=1)
+                    self.add_log_to_file(formula, result)
 
-            frame_pause1 = CTkFrame(self.frame_widget, width=700, height=10, bg_color='white smoke',
-                                    fg_color='white smoke',
-                                    border_color='white smoke')
+                frame_result.pack()
 
-            frame_pause1.pack()
-            self.frame_widget.pack()
+                frame_pause1 = CTkFrame(self.frame_widget, width=700, height=10, bg_color='white smoke',
+                                        fg_color='white smoke',
+                                        border_color='white smoke')
+
+                frame_pause1.pack()
+                self.frame_widget.pack()
 
     # metoda odpowiedzialna za niszczenie obszaru wynikowego
     def del_widget(self):
         self.frame_widget.destroy()
+
+    def read_formula_file(self):
+        f = open("logs/dual_integral_logs.txt", "r")
+        whole_file = []
+        for line in f:
+            whole_file.append(line)
+        f.close()
+        whole_file.reverse()
+
+        last_logs = []
+        if len(whole_file) >= 5:
+            for i in range(5):
+                last_logs.append(whole_file[i])
+        else:
+            for i in range(len(whole_file)):
+                last_logs.append(whole_file[i])
+
+        return last_logs
+
+    def add_log_to_file(self, formula, result):
+        f = open("logs/dual_integral_logs.txt", "a")
+        f.write('\nformula: {} - result: {}'.format(formula, result))
+        f.close()
+
+    def show_last_logs(self):
+        self.last_logs_results = DualIntegralGui.read_formula_file(self)
+        newWindow = Toplevel(self.parent)
+        newWindow.title("Ostatnie obliczenia")
+        newWindow.geometry("400x120")
+        newWindow.resizable(False, False)
+        v = Scrollbar(newWindow, orient='horizontal')
+        v.pack(side=BOTTOM, fill='x')
+
+        t = Text(newWindow, wrap=NONE, xscrollcommand=v.set)
+
+        for i in range(len(self.last_logs_results)):
+            if i == 0:
+                s = str(self.last_logs_results[i] + '\n')
+            else:
+                s = str(self.last_logs_results[i])
+            t.insert(END, s)
+        t.pack()
+        v.config(command=t.xview)
+
+        newWindow.mainloop()

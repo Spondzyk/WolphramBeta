@@ -1,0 +1,9 @@
+
+formula: x - result: 10
+formula: x^2 + 5 - result: 105
+formula: x^2-1 - result: 15
+formula: x^2-1 - result: 15
+formula: x^2-1 - result: 15
+formula: x^2-14345 - result: -14329
+formula: x^2-14345 - result: oo
+formula: 45 - result: 45

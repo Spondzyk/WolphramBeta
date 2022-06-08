@@ -117,19 +117,19 @@ class DualMatrixGui(CTkFrame):
         frame_pause.pack()
 
         # jesli wprowadzona ilosc kolumn macierzy 1 nie jest cyfra wieksza od 0 to komunikat
-        if not self.col_size1.get().isdigit():
+        if not self.col_size1.get().isdigit() or self.col_size1.get() == '0':
             tkinter.messagebox.showerror("Błąd danych",
                                          "dana wprowadzona do pola odpowiadającego za ilość kolumn macierzy 1, nie jest liczbą większą od 0")
         # jesli wprowadzona ilosc rzedow macierzy 1 nie jest cyfra wieksza od 0 to komunikat
-        elif not self.row_size1.get().isdigit():
+        elif not self.row_size1.get().isdigit() or self.row_size1.get() == '0':
             tkinter.messagebox.showerror("Błąd danych",
                                          "dana wprowadzona do pola odpowiadającego za ilość rzędów macierzy 1, nie jest liczbą większą od 0")
         # jesli wprowadzona ilosc kolumn macierzy 2 nie jest cyfra wieksza od 0 to komunikat
-        elif not self.col_size2.get().isdigit():
+        elif not self.col_size2.get().isdigit() or self.col_size2.get() == '0':
             tkinter.messagebox.showerror("Błąd danych",
                                          "dana wprowadzona do pola odpowiadającego za ilość kolumn macierzy 2, nie jest liczbą większą od 0")
         # jesli wprowadzona ilosc rzedow macierzy 2 nie jest cyfra wieksza od 0 to komunikat
-        elif not self.row_size2.get().isdigit():
+        elif not self.row_size2.get().isdigit() or self.row_size2.get() == '0':
             tkinter.messagebox.showerror("Błąd danych",
                                          "dana wprowadzona do pola odpowiadającego za ilość rzędów macierzy 2, nie jest liczbą większą od 0")
         else:

@@ -128,13 +128,6 @@ class TwoVariableFunctionGui(CTkFrame):
             flag = False
 
         if flag:
-            if self.frame_widget is not None:
-                TwoVariableFunctionGui.del_widget(self)
-
-            self.frame_widget = CTkFrame(self.frame_entry, width=600, height=600, bg_color='white',
-                                         fg_color='white',
-                                         border_color='white')
-
             # wykorzystanie metody zwracajacej obraz funkcji dwoch zmiennych
             fig = self.chart.plot_function_with_two_variables(self.formula.get(), self.start_x, self.stop_x,
                                                               self.start_y, self.stop_y)

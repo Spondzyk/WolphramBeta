@@ -12,13 +12,14 @@ class LimitsGui(CTkFrame):
         CTkFrame.__init__(self, master)
         self.frame_widget = None
         self.parent = master
-        self.parent.geometry("{}x{}".format(800, 350))
+        self.parent.geometry("{}x{}".format(800, 400))
         self.parent.resizable(False, False)
         self.side = None
         self.side_char = None
         self.e_limit = None
         self.end_limit = None
         self.formula = None
+        self.last_logs_results = LimitsGui.read_formula_file(self)
         # wykorzystanie wcześniej wykonanego backend'u
         self.math_ = CalculusAndAnalysis
         self.create()
@@ -32,6 +33,23 @@ class LimitsGui(CTkFrame):
         pause0_frame = CTkFrame(self.frame_entry, width=800, height=20, bg_color='white', fg_color='white',
                                 border_color='white')
         pause0_frame.pack()
+
+
+        button_log_frame = CTkFrame(self.frame_entry, width=800, height=50, bg_color='white', fg_color='white',
+                                    border_color='white')
+
+        label_pau = CTkLabel(button_log_frame, text_color='white', width=600, height=30, bg_color='white',
+                             fg_color='white')
+        log_button = CTkButton(button_log_frame, text='pokaż ostatnie działania', width=150,
+                               command=self.show_last_logs)
+        label_pau.grid(row=0, column=0)
+        log_button.grid(row=0, column=1)
+        button_log_frame.pack()
+
+        # frame z przerwa
+        pause__frame = CTkFrame(self.frame_entry, width=800, height=20, bg_color='white', fg_color='white',
+                                border_color='white')
+        pause__frame.pack()
 
         # frame z informacja wejsciowa
         info_frame = CTkFrame(self.frame_entry, width=800, height=100, bg_color='white', fg_color='white',
@@ -190,12 +208,6 @@ class LimitsGui(CTkFrame):
             flag = False
 
         if flag:
-            if self.frame_widget is not None:
-                LimitsGui.del_widget(self)
-
-            self.frame_widget = CTkFrame(self.frame_entry, width=800, height=100, bg_color='white smoke',
-                                         fg_color='white smoke',
-                                         border_color='white smoke')
             # frame z przerwa
             frame_pause = CTkFrame(self.frame_widget, width=800, height=10, bg_color='white smoke',
                                    fg_color='white smoke',
@@ -247,8 +259,10 @@ class LimitsGui(CTkFrame):
                         else:
                             tkinter.messagebox.showerror('Błąd formuły',
                                                          'Błąd formuły, wystąpił nieoczekiwany błąd, sprawdź poprawność zapisu albo spróbuj ponownie')
+                        self.add_log_to_file(formula, result)
                     else:
                         tkinter.messagebox.showerror("Błąd", result)
+                        self.add_log_to_file(formula, result)
                 # jesli nie jest stringiem to wtedy wynik prawidlowy i wypisanie
                 else:
                     label_r = CTkLabel(frame_result, text='Wynik: ', width=100, height=50,
@@ -260,6 +274,7 @@ class LimitsGui(CTkFrame):
                                            bg_color='white smoke', text_font=("Arial Bold", 13),
                                            fg_color='white smoke')
                     label_final.grid(row=0, column=1)
+                    self.add_log_to_file(formula, result)
 
                 frame_result.pack()
 
@@ -276,3 +291,48 @@ class LimitsGui(CTkFrame):
     # metoda odpowiedzialna za niszczenie obszaru wynikowego
     def del_widget(self):
         self.frame_widget.destroy()
+
+    def read_formula_file(self):
+        f = open("logs/limits_logs.txt", "r")
+        whole_file = []
+        for line in f:
+            whole_file.append(line)
+        f.close()
+        whole_file.reverse()
+
+        last_logs = []
+        if len(whole_file) >= 5:
+            for i in range(5):
+                last_logs.append(whole_file[i])
+        else:
+            for i in range(len(whole_file)):
+                last_logs.append(whole_file[i])
+
+        return last_logs
+
+    def add_log_to_file(self, formula, result):
+        f = open("logs/limits_logs.txt", "a")
+        f.write('\nformula: {} - result: {}'.format(formula, result))
+        f.close()
+
+    def show_last_logs(self):
+        self.last_logs_results = LimitsGui.read_formula_file(self)
+        newWindow = Toplevel(self.parent)
+        newWindow.title("Ostatnie obliczenia")
+        newWindow.geometry("400x120")
+        newWindow.resizable(False, False)
+        v = Scrollbar(newWindow, orient='horizontal')
+        v.pack(side=BOTTOM, fill='x')
+
+        t = Text(newWindow, wrap=NONE, xscrollcommand=v.set)
+
+        for i in range(len(self.last_logs_results)):
+            if i == 0:
+                s = str(self.last_logs_results[i]+'\n')
+            else:
+                s = str(self.last_logs_results[i])
+            t.insert(END, s)
+        t.pack()
+        v.config(command=t.xview)
+
+        newWindow.mainloop()

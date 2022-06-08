@@ -130,12 +130,6 @@ class OneVariableFunctionGui(CTkFrame):
             flag = False
 
         if flag:
-            if self.frame_widget is not None:
-                OneVariableFunctionGui.del_widget(self)
-
-            self.frame_widget = CTkFrame(self.frame_entry, width=600, height=600, bg_color='white',
-                                         fg_color='white',
-                                         border_color='white')
             # wykorzystanie metody zwracajacej obraz funkcji jednej zmiennej
             fig = self.chart.plot_a_function_of_one_variable(self.formula.get(), self.start_w, self.stop_w,
                                                              self.if_grid)
