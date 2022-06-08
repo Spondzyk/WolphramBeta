@@ -1,0 +1,12 @@
+formula: x^2 - result: 2*x
+formula: z^2 - result: 2*z
+formula: z - result: 1
+formula: z - result: 1
+formula: x^3 + 5*x + sin(x) * x - result: 3*x^2 + x*cos(x) + sin(x) + 5
+formula: x - result: 1
+formula: 55x+5555555 - result: Nieprawid³owa formu³a, zmienn¹ musi byæ litera
+formula: 55*x+5555555 - result: 55
+formula: 1234*x^77-55*x+5555555 - result: 95018*x^76 - 55
+formula: gtergr - result: name error
+formula: sgfs*x - result: sgfs
+formula: 2*8*sgfs*x - result: 16*sgfs

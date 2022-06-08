@@ -1,0 +1,31 @@
+formula: x^2 + 3*x - result: x**3/3 + 3*x**2/2
+formula: x^2 + 3*x + x^3 - result: x**4/4 + x**3/3 + 3*x**2/2
+formula: 4 - result: 4*x
+formula: 4 - result: 4
+formula: 4 - result: 4
+formula: 4x - result: syntax error
+formula: 4x - result: syntax error
+formula: 4*x - result: 2
+formula: 4*x^2-44*x+1212 - result: 3574/3
+formula: 4*x^2-44*x+1212 - result: 3574/3
+formula: 4*x^2-44*x+1212 - result: 3574/3
+formula: 4*x^2-44*x+1212 - result: 3574/3
+formula: 4*x^2-44*x+1212 - result: 3574/3
+formula: 4*x^2-44*x+1212 - result: 3574/3
+formula: 4*x^2-44*x+1212 - result: 3574/3
+formula: 4*x^2-44*x+1212 - result: 3574/3
+formula: 4*x^2-44*x+1212 - result: 3574/3
+formula: 4*x^2-44*x+1212 - result: 3574/3
+formula: 4*x^2-44*x+1212 - result: 3574/3
+formula: 4*x^2-44*x+1212 - result: 3574/3
+formula: 4*x^2-44*x+1212 - result: 3574/3
+formula: 4*x^2-44*x+1212 - result: 3574/3
+formula: 4*x^2-44*x+1212 - result: 3574/3
+formula: 4*x^2-44*x+1212 - result: 3574/3
+formula: 4*x^2-44*x+1212 - result: 3574/3
+formula: 4*x^2-44*x+1212 - result: 3574/3
+formula: 4*x^2-44*x+1212 - result: 3574/3
+formula: 4*x^2-44*x+1212x^66 - result: syntax error
+formula: 4*x^2-44*x+1212*x^66 - result: -518/201
+formula: x - result: x**2/2
+formula: x - result: 3/2

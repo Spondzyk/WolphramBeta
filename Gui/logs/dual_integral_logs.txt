@@ -1,0 +1,9 @@
+
+formula: x^2 + y - result: x**3*y/3 + x*y**2/2
+formula: x^2 - result: x**3*y/3
+formula: x^2 - result: x**3*y/3
+formula: 4*x^6 - result: 0
+formula: 4*x^6 - result: 0
+formula: 4*x^6+55 - result: 0
+formula: 4*x^6+55 - result: 0
+formula: 4*x^6+55 - result: 22924628/7
