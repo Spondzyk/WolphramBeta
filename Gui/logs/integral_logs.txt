@@ -29,3 +29,13 @@ formula: 4*x^2-44*x+1212x^66 - result: syntax error
 formula: 4*x^2-44*x+1212*x^66 - result: -518/201
 formula: x - result: x**2/2
 formula: x - result: 3/2
+
+formula: x^2 - result: x**3/3
+formula: x^3 - result: x**4/4
+formula: x^4 - result: x**5/5
+formula: x^5 - result: x**6/6
+formula: x^6-8 - result: x**7/7 - 8*x
+formula: x^2 - result: x**3/3
+formula: x^2 - result: 7/3
+formula: z^2 - result: name error
+formula: x^2 - result: Nieprawid³owe granice ca³ki
